@@ -32,6 +32,16 @@
             .login-input {
                 margin: 10px 0;
 
+                .custom-input-password {
+                    position: relative;
+
+                    .eyeshow {
+                        position: absolute;
+                        right: 5px;
+                        top: 10px;
+                    }
+                }
+
                 .form-control {
                     width: 95%;
                     height: 30px;

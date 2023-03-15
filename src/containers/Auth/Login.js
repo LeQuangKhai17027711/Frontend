@@ -1,28 +1,31 @@
 import React, { useState } from "react";
-//import { connect } from "react-redux";
-//import { push } from "connected-react-router"
-//import * as actions from "../store/actions" 
+import { useDispatch } from 'react-redux'
 import './Login.scss';
-//import { FormattedMessage } from "react-intl"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { getAllUser } from '../graphql-client/queries';
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { loginUser } from '../graphql-client/queries';
 import { useQuery } from "@apollo/client";
+import { allActions } from "../../store/actions/index.js";
 
 const Login = () => {
     library.add(fab)
+    library.add(fas)
 
     const [username, setName] = useState('')
     const [password, setPassWord] = useState('')
+    const [errormessage, setErrorMessage] = useState('')
+    const [isShowPassWord, setPass] = useState(false)
+    const dispatch = useDispatch()
 
-    //Get user
-    const GetUsers = () => {
-        const { loading, error, data } = useQuery(getAllUser)
-        if (loading) return console.log('Dang load')
-        if (error) return console.log('Dang error')
-        return console.log(data)
-    }
+    const dataLogin = useQuery(loginUser, {
+        variables: {
+            email: username,
+            passWord: password,
+        },
+        enabled: false
+    })
 
     const handleOnChangeUser = (event) => {
         setName(event.target.value)
@@ -34,10 +37,20 @@ const Login = () => {
         console.log(password)
     }
 
-    const handleLogin = () => {
-        console.log(username + ' ' + password)
+    const handleShowHidePassword = () => {
+        setPass(!isShowPassWord)
     }
-    GetUsers()
+
+    const handleUserLogin = () => {
+        // manually refetch
+        if (dataLogin.data.login.errCode == 0) {
+            setErrorMessage('');
+            dispatch(allActions.userLoginSuccess(dataLogin.data.login.user));
+        } else {
+            setErrorMessage(dataLogin.data.login.errMessage)
+        }
+    };
+
     return (
 
         <div className="login-background">
@@ -54,15 +67,22 @@ const Login = () => {
                     </div>
                     <div className="col-12 form-group login-input">
                         <label className="label">Password:</label><br />
-                        <input type="text"
-                            className="form-control"
-                            placeholder="Enter your password"
-                            value={password}
-                            onChange={(event) => handleOnChangePassword(event)} />
+                        <div className="custom-input-password">
+                            <input
+                                type={isShowPassWord ? 'text' : 'password'}
+                                className="form-control"
+                                placeholder="Enter your password"
+                                value={password}
+                                onChange={(event) => handleOnChangePassword(event)} />
+                            <span onClick={() => handleShowHidePassword()}><FontAwesomeIcon className="eyeshow" icon={isShowPassWord ? ['fas', 'fa-eye-slash'] : ['fas', 'fa-eye']} /></span>
+                        </div>
+                    </div>
+                    <div className="col-12" style={{ color: 'red' }}>
+                        {errormessage}
                     </div>
                     <div className="col-12">
                         <button className="btn-login"
-                            onClick={() => handleLogin()}>Login</button>
+                            onClick={() => handleUserLogin()}>Login</button>
                     </div>
 
                     <div className="col-12">
@@ -81,7 +101,6 @@ const Login = () => {
     )
 
 }
-
 
 
 export default Login;
