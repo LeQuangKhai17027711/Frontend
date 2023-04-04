@@ -1,10 +1,6 @@
-import { addUserSuccess, userLoginSuccess, userLoginFail, processLogout } from "./userActions"
+import { register, login, logout } from "./userActions"
 
 export const allActions = {
-    //
-    addUserSuccess,
-    userLoginSuccess,
-    userLoginFail,
-    processLogout,
+
 }
 

@@ -1,0 +1,84 @@
+.section-specialty {
+    height: 330px;
+    background: white;
+
+    .section-container {
+        margin: 0 200px;
+        display: flex;
+        flex-direction: column;
+
+        .section-header {
+            height: 60px;
+            margin-top: 10px;
+            padding-top: 10px;
+
+            .title-section {
+                font-size: 22px;
+                font-weight: 600;
+
+            }
+
+            .btn-section {
+                float: right;
+                border: none;
+                outline: none;
+                display: block;
+                background: rgb(235, 229, 229);
+                color: black;
+                cursor: pointer;
+                text-transform: uppercase;
+
+                &:hover {
+                    color: white;
+                    background: rgb(125, 126, 124);
+                }
+            }
+        }
+
+        .section-body {
+
+            .product-customize {
+                .bg-img {
+                    height: 200px;
+                    width: 350px;
+                    background: url(../../../assets/product/194032-chup-ct-scanner.jpg);
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    background-color: #eee;
+                    background-size: cover;
+                }
+            }
+
+
+            .slick-prev {
+
+                left: -20px !important;
+                z-index: 1000 !important;
+                height: 55px !important;
+                width: 52px !important;
+
+            }
+
+            .slick-prev::before {
+                margin-left: 15px;
+                background-color: gray;
+            }
+
+
+            .slick-next {
+                right: 0 !important;
+                z-index: 1000 !important;
+                height: 55px !important;
+                width: 52px !important;
+
+            }
+
+            .slick-next::before {
+                margin-left: 15px;
+                background-color: gray;
+            }
+        }
+    }
+
+
+}

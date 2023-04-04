@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { Table } from 'react-bootstrap';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import './UserManage.scss'
+
 import { useMutation } from "@apollo/client";
+
 import { addNewUser, getAllUser } from '../graphql-client/queries.js';
 import { ListUser } from './UserList';
 
@@ -24,21 +29,16 @@ export const UserManage = () => {
         gender: false,
         image: '',
         phoneNumber: '',
-        roleId: "1",
-        positionId: "2",
+        role: 'CUSTOMER',
+        position: 'Nomal',
     })
 
 
     const [modal, setModal] = useState(false);
 
-
     //Create User
 
     const [newUser, newUserData] = useMutation(addNewUser)
-    if (newUserData.called === true && newUserData.loading === false) {
-        alert(newUserData.data.createUser.errMessage)
-    }
-
 
     //ShowHide Modal
     const toggle = () => setModal(!modal);
@@ -97,10 +97,22 @@ export const UserManage = () => {
                     gender: newuser.gender,
                     image: newuser.image,
                     phoneNumber: newuser.phoneNumber,
-                    roleId: "1",
-                    positionId: "2",
+                    role: 'CUSTOMER',
+                    position: 'Nomal',
                 },
                 refetchQueries: [{ query: getAllUser }]
+            })
+            setNewUser({
+                email: '',
+                passWord: '',
+                firstName: '',
+                lastName: '',
+                address: '',
+                gender: false,
+                image: '',
+                phoneNumber: '',
+                role: 'CUSTOMER',
+                position: 'Nomal',
             })
 
             toggle()

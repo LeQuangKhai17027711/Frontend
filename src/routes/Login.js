@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Navigate, useNavigate } from 'react-router-dom';
 import './Login.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-import { loginUser } from '../graphql-client/queries';
-import { useQuery } from "@apollo/client";
-import { allActions } from "../../store/actions/index.js";
+import { loginUser } from '../containers/graphql-client/queries';
+import { useMutation, useQuery } from "@apollo/client";
+import { allActions } from "../store/actions/index.js";
+import "bootstrap/dist/css/bootstrap.min.css"
 
-const Login = () => {
+export const Login = () => {
     library.add(fab)
     library.add(fas)
 
@@ -17,15 +19,7 @@ const Login = () => {
     const [password, setPassWord] = useState('')
     const [errormessage, setErrorMessage] = useState('')
     const [isShowPassWord, setPass] = useState(false)
-    const dispatch = useDispatch()
-
-    const dataLogin = useQuery(loginUser, {
-        variables: {
-            email: username,
-            passWord: password,
-        },
-        enabled: false
-    })
+    const [login, dataLogin] = useMutation(loginUser)
 
     const handleOnChangeUser = (event) => {
         setName(event.target.value)
@@ -42,21 +36,36 @@ const Login = () => {
     }
 
     const handleUserLogin = () => {
+
+        login({
+            variables: {
+                email: username,
+                passWord: password
+            }
+        })
+
         // manually refetch
+        console.log(dataLogin.data.login)
         if (dataLogin.data.login.errCode == 0) {
             setErrorMessage('');
-            dispatch(allActions.userLoginSuccess(dataLogin.data.login.user));
+            localStorage.setItem('user', JSON.stringify(dataLogin.data.login))
+
         } else {
             setErrorMessage(dataLogin.data.login.errMessage)
         }
     };
 
     return (
-
         <div className="login-background">
             <div className="login-container">
                 <div className="login-content row">
                     <div className="col-12 text-login">Login</div>
+                    <div className="text-center">
+                        Not registered yet?{" "}
+                        <span className="link-primary" onClick={() => { console.log("OK") }}>
+                            Sign Up
+                        </span>
+                    </div>
                     <div className="col-12 form-group login-input">
                         <label className="label">Username:</label><br />
                         <input type="text"
@@ -103,4 +112,3 @@ const Login = () => {
 }
 
 
-export default Login;

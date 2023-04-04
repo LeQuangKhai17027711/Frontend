@@ -1,20 +1,47 @@
-import actionTypes from "./actionTypes.js"
 
-export const addUserSuccess = () => ({
-    type: actionTypes.ADD_USER_SUCCESS,
-})
-
-export const userLoginSuccess = (userInfo) => ({
-    type: actionTypes.USER_LOGIN_SUCCESS,
-    payload: userInfo
-})
-
-export const userLoginFail = () => ({
-    type: actionTypes.ADMIN_LOGIN_FAIL,
-})
-
-export const processLogout = () => ({
-    type: actionTypes.PROCESS_LOGOUT,
-})
+import {
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    LOGOUT,
+} from "./actionTypes.js";
 
 
+export const userLoginSuccess = (userInfo) => (dispatch) => {
+    return AuthService.login(username, password).then(
+        (data) => {
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: { user: data },
+            });
+
+            return Promise.resolve();
+        },
+        (error) => {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+
+            dispatch({
+                type: LOGIN_FAIL,
+            });
+
+            dispatch({
+                type: SET_MESSAGE,
+                payload: message,
+            });
+
+            return Promise.reject();
+        }
+    );
+};
+
+export const logout = () => (dispatch) => {
+    AuthService.logout();
+
+    dispatch({
+        type: LOGOUT,
+    });
+};

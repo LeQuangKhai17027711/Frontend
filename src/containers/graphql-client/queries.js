@@ -1,18 +1,6 @@
 import { gql } from '@apollo/client'
 
-//Login
-export const loginUser = gql`
-query Query($email: String!, $passWord: String!) {
-  login(email: $email, passWord: $passWord) {
-    errCode
-    errMessage
-    user {
-      email
-      roleId
-    }
-  }
-}
-`
+
 
 // //Get all user
 export const getAllUser = gql`
@@ -28,8 +16,8 @@ query Users {
       phoneNumber
       gender
       image
-      positionId
-      roleId
+      position
+      role
     }
   }
 }
@@ -50,17 +38,48 @@ query User($email: String!) {
       phoneNumber
       gender
       image
-      roleId
-      positionId
+      role
+      position
     }
   }
 }
 `
 
-// //Add user
+//Login
+export const loginUser = gql`
+mutation Mutation($email: String!, $passWord: String!) {
+  login(email: $email, passWord: $passWord) {
+    accessToken
+    errCode
+    errMessage
+    user {
+      lastName
+      role
+      position
+      phoneNumber
+      image
+      gender
+      firstName
+      email
+      address
+    }
+  }
+}
+`
+
+//Add user
 export const addNewUser = gql`
-mutation CreateUser($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $roleId: String, $phoneNumber: String, $positionId: String) {
-  createUser(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, image: $image, roleId: $roleId, phoneNumber: $phoneNumber, positionId: $positionId) {
+mutation Mutation($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $role: Role, $phoneNumber: String, $position: Position) {
+  createUser(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, image: $image, role: $role, phoneNumber: $phoneNumber, position: $position) {
+    errCode
+    errMessage
+  }
+}
+`
+//Update user
+export const updateUser = gql`
+mutation UpdateUser($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $role: Role, $phoneNumber: String, $position: Position) {
+  updateUser(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, image: $image, role: $role, phoneNumber: $phoneNumber, position: $position) {
     errCode
     errMessage
   }
@@ -69,7 +88,7 @@ mutation CreateUser($email: String!, $passWord: String, $firstName: String, $las
 
 // //Delete user
 export const deleteUser = gql`
-mutation DeleteUser($email: String!) {
+mutation Mutation($email: String!) {
   deleteUser(email: $email) {
     errCode
     errMessage
