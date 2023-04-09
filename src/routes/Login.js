@@ -1,54 +1,89 @@
-import React, { useState } from "react";
+import * as React from 'react';
+
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useSnackbar } from 'notistack';
+
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 import './Login.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fab } from '@fortawesome/free-brands-svg-icons'
-import { fas } from '@fortawesome/free-solid-svg-icons'
 import { loginUser } from '../containers/graphql-client/queries';
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { allActions } from "../store/actions/index.js";
-import "bootstrap/dist/css/bootstrap.min.css"
 
-export const Login = () => {
-    library.add(fab)
-    library.add(fas)
 
-    const [username, setName] = useState('')
-    const [password, setPassWord] = useState('')
-    const [errormessage, setErrorMessage] = useState('')
-    const [isShowPassWord, setPass] = useState(false)
+function Copyright(props) {
+    return (
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+            {'Copyright © '}
+            <Link color="inherit" href="http://localhost:3000/">
+                Your Website
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
+
+const theme = createTheme();
+
+export const SignInSide = () => {
+
+    const [variant, setVariant] = React.useState('')
+    const [username, setName] = React.useState('')
+    const [password, setPassWord] = React.useState('')
+    const [errormessage, setErrorMessage] = React.useState('')
+    const [isShowPassWord, setPass] = React.useState(false)
     const [login, dataLogin] = useMutation(loginUser)
+    const { enqueueSnackbar } = useSnackbar();
+    const dispatch = useDispatch()
+    const auth = useSelector((state) => state.user)
 
-    const handleOnChangeUser = (event) => {
-        setName(event.target.value)
-        console.log(username)
-    }
-
-    const handleOnChangePassword = (event) => {
-        setPassWord(event.target.value)
-        console.log(password)
-    }
-
-    const handleShowHidePassword = () => {
-        setPass(!isShowPassWord)
-    }
-
-    const handleUserLogin = () => {
-
+    React.useEffect(() => {
         login({
             variables: {
                 email: username,
                 passWord: password
             }
         })
+    }, [username, password, login])
 
-        // manually refetch
-        console.log(dataLogin.data.login)
-        if (dataLogin.data.login.errCode == 0) {
+
+    const handleOnChangeUser = (event) => {
+        setName(event.target.value)
+
+    }
+
+    const handleOnChangePassword = (event) => {
+        setPassWord(event.target.value)
+
+    }
+
+    const handleShowHidePassword = () => {
+
+        setPass(!isShowPassWord)
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        setVariant('success')
+        if (dataLogin.data.login.errCode === "0") {
             setErrorMessage('');
             localStorage.setItem('user', JSON.stringify(dataLogin.data.login))
+            dispatch(allActions.userLoginSuccess(dataLogin.data.login.user))
+            enqueueSnackbar('Loggin success!', { variant });
 
         } else {
             setErrorMessage(dataLogin.data.login.errMessage)
@@ -56,59 +91,104 @@ export const Login = () => {
     };
 
     return (
-        <div className="login-background">
-            <div className="login-container">
-                <div className="login-content row">
-                    <div className="col-12 text-login">Login</div>
-                    <div className="text-center">
-                        Not registered yet?{" "}
-                        <span className="link-primary" onClick={() => { console.log("OK") }}>
-                            Sign Up
-                        </span>
-                    </div>
-                    <div className="col-12 form-group login-input">
-                        <label className="label">Username:</label><br />
-                        <input type="text"
-                            className="form-control"
-                            placeholder="Enter your username"
-                            value={username}
-                            onChange={(event) => handleOnChangeUser(event)} />
-                    </div>
-                    <div className="col-12 form-group login-input">
-                        <label className="label">Password:</label><br />
-                        <div className="custom-input-password">
-                            <input
+
+        <ThemeProvider theme={theme}>
+            {
+                auth.isLoggedIn &&
+                <Navigate to="/home" replace={true} />
+            }
+            <Grid container component="main" sx={{ height: '100vh' }}>
+                <CssBaseline />
+                <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={7}
+                    sx={{
+                        backgroundImage: 'url(https://source.unsplash.com/random)',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: (t) =>
+                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                />
+                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <Box
+                        sx={{
+                            my: 8,
+                            mx: 4,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                            <TextField
+
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                onChange={(event) => handleOnChangeUser(event)}
+                            />
+
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
                                 type={isShowPassWord ? 'text' : 'password'}
-                                className="form-control"
-                                placeholder="Enter your password"
-                                value={password}
-                                onChange={(event) => handleOnChangePassword(event)} />
-                            <span onClick={() => handleShowHidePassword()}><FontAwesomeIcon className="eyeshow" icon={isShowPassWord ? ['fas', 'fa-eye-slash'] : ['fas', 'fa-eye']} /></span>
-                        </div>
-                    </div>
-                    <div className="col-12" style={{ color: 'red' }}>
-                        {errormessage}
-                    </div>
-                    <div className="col-12">
-                        <button className="btn-login"
-                            onClick={() => handleUserLogin()}>Login</button>
-                    </div>
-
-                    <div className="col-12">
-                        <span className="forgot-password">Forgot your password ?</span>
-                    </div>
-                    <div className="col-12 text-center mt-3">
-                        <span className="text-other-login">Or login with:</span>
-                    </div>
-                    <div className="col-12 social-login">
-                        <FontAwesomeIcon className="facebook" icon={['fab', 'facebook']} />
-                        <FontAwesomeIcon className="google" icon={['fab', 'google-plus']} />
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-
+                                id="password"
+                                autoComplete="current-password"
+                                onChange={(event) => handleOnChangePassword(event)}
+                            />
+                            <div className="custom-input-password">
+                                <span onClick={() => handleShowHidePassword()} className="eyeshow">{isShowPassWord ? 'hide' : 'show'}</span>
+                            </div>
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary" />}
+                                label="Remember me"
+                            />
+                            <div className="col-12" style={{ color: 'red' }}>
+                                {errormessage}
+                            </div>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Sign In
+                            </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link href="#" variant="body2">
+                                        Forgot password?
+                                    </Link>
+                                </Grid>
+                                <Grid item>
+                                    <Link href="/register" variant="body2">
+                                        {"Don't have an account? Sign Up"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                            <Copyright sx={{ mt: 5 }} />
+                        </Box>
+                    </Box>
+                </Grid>
+            </Grid>
+        </ThemeProvider>
+    );
 }
-
-

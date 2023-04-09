@@ -42,34 +42,34 @@ export const Production = () => {
             <div className='section-container'>
                 <div>
                     <div className='section-header'>
-                        <span className='title-section'>Sản phẩm nổi bật</span>
+                        <span className='title-section'>Dịch vụ bảo trì</span>
                         <button className='btn-section'>Xem thêm</button>
                     </div>
                     <div className='section-body'>
                         <Slider {...settings}>
                             <div className='product-customize'>
                                 <div className='bg-img' />
-                                <div>Sản phẩm 1</div>
+                                <div>Dịch vụ 1</div>
                             </div>
                             <div className='product-customize'>
                                 <div className='bg-img' />
-                                <div>Sản phẩm 2</div>
+                                <div>Dịch vụ 2</div>
                             </div>
                             <div className='product-customize'>
                                 <div className='bg-img' />
-                                <div>Sản phẩm 3</div>
+                                <div>Dịch vụ 3</div>
                             </div>
                             <div className='product-customize'>
                                 <div className='bg-img' />
-                                <div>Sản phẩm 4</div>
+                                <div>Dịch vụ 4</div>
                             </div>
                             <div className='product-customize'>
                                 <div className='bg-img' />
-                                <div>Sản phẩm 5</div>
+                                <div>Dịch vụ 5</div>
                             </div>
                             <div className='product-customize'>
                                 <div className='bg-img' />
-                                <div >Sản phẩm 6</div>
+                                <div >Dịch vụ 6</div>
                             </div>
                         </Slider>
                     </div>

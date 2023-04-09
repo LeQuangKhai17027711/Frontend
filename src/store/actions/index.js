@@ -1,6 +1,7 @@
-import { register, login, logout } from "./userActions"
+import { userLoginSuccess, processLogout } from "./userActions"
 
 export const allActions = {
-
+    userLoginSuccess,
+    processLogout,
 }
 

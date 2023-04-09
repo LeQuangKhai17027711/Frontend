@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter, FormGroup, Label, Input, Row, Col } from 'reactstrap';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import 'bootstrap/dist/css/bootstrap.css';
 import './UserManage.scss'
@@ -21,14 +25,12 @@ export const ListUser = () => {
         gender: false,
         image: '',
         phoneNumber: '',
-        roleId: "1",
-        positionId: "2",
+        role: 'Admin',
+        position: 'None',
     })
     const [modal, setModal] = useState(false);
     const [userupdate, datauser] = useMutation(updateUser)
     const [deleteuser, userdata] = useMutation(deleteUser)
-
-
 
     //ShowHide Modal
     const toggle = () => setModal(!modal);
@@ -39,7 +41,7 @@ export const ListUser = () => {
 
     //Delete user
     const HandleDeleteUser = (email) => {
-        console.log(email)
+
         deleteuser({
             variables: {
                 email: email,
@@ -51,7 +53,7 @@ export const ListUser = () => {
     //Get User Update
     const GetUserUpdate = (user) => {
         toggle()
-        console.log(user)
+
         setUpdateUser({
             email: user.email,
             passWord: undefined,
@@ -60,9 +62,9 @@ export const ListUser = () => {
             address: user.address,
             phoneNumber: user.phoneNumber,
             gender: user.gender,
-            image: '',
-            roleId: "1",
-            positionId: "2",
+            image: null,
+            role: user.role,
+            position: user.position,
         })
     }
 
@@ -77,13 +79,15 @@ export const ListUser = () => {
             userupdate({
                 variables: {
                     email: updateuser.email,
-                    passWord: undefined,
+                    passWord: updateuser.passWord,
                     firstName: updateuser.firstName,
                     lastName: updateuser.lastName,
                     address: updateuser.address,
                     phoneNumber: updateuser.phoneNumber,
                     gender: updateuser.gender,
                     image: updateuser.image,
+                    role: updateuser.role,
+                    position: updateuser.position,
                 },
                 refetchQueries: [{ query: getAllUser }]
             })
@@ -92,7 +96,17 @@ export const ListUser = () => {
     }
 
     //Get OnChange Value
+    const handleResetPass = () => {
+        setUpdateUser({
+            ...updateuser,
+            passWord: '123456'
+        })
+    }
+
+    //Get OnChange Value
     const handleOnChangeInput = (event) => {
+        console.log(event.target.name)
+        console.log(event.target.value)
         setUpdateUser({
             ...updateuser,
             [event.target.name]: event.target.value
@@ -127,16 +141,13 @@ export const ListUser = () => {
                                 <Label for="examplePassword">
                                     Password
                                 </Label>
-                                <Input
-                                    id="examplePassword"
-                                    name="passWord"
-                                    placeholder="password placeholder"
-                                    type="password"
-                                    onChange={(event) => { handleOnChangeInput(event) }}
-                                    value={updateuser.passWord}
-                                    disabled
-                                />
+                                <Button className='btn-reset' variant="contained"
+                                    color="primary"
+                                    onClick={() => { handleResetPass() }}
+                                    id="examplePassword">Reset password
+                                </Button>
                             </FormGroup>
+
                         </Col>
                     </Row>
                     <Row>
@@ -201,32 +212,30 @@ export const ListUser = () => {
                     </Row>
                     <Row>
                         <Col md={6}>
-                            <FormGroup row className='exampleSelect'>
-                                <Label
-
-                                    for="exampleSelect"
-                                    sm={3}
-                                >
-                                    Gender
-                                </Label>
-                                <Col sm={5}>
-                                    <Input
-                                        id="exampleSelect"
-                                        name='gender'
-                                        type="select"
-                                        onChange={(event) => { handleOnChangeInput(event) }}
-                                        value={updateuser.gender}
-                                    >
-                                        <option>
-                                            Nữ
-                                        </option>
-                                        <option>
-                                            Nam
-                                        </option>
-
-                                    </Input>
-                                </Col>
-                            </FormGroup>
+                            <FormLabel id="radio-buttons-group-label">Gender</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="radio-buttons-group-label"
+                                name="gender"
+                                onChange={(event) => { handleOnChangeInput(event) }}
+                            >
+                                <FormControlLabel
+                                    value="Nữ"
+                                    control={<Radio />}
+                                    label="Nữ"
+                                />
+                                <FormControlLabel
+                                    value="Nam"
+                                    control={<Radio />}
+                                    label="Nam"
+                                />
+                                <FormControlLabel
+                                    value="disabled"
+                                    disabled
+                                    control={<Radio />}
+                                    label="Khác"
+                                />
+                            </RadioGroup>
                         </Col>
                         <Col md={6}>
                             <FormGroup>
@@ -240,6 +249,66 @@ export const ListUser = () => {
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={updateuser.image}
                                 />
+                            </FormGroup>
+                        </Col>
+                        <Col md={6}>
+                            <FormGroup row className='exampleSelect'>
+                                <Label
+
+                                    for="exampleSelect"
+                                    sm={3}
+                                >
+                                    Role
+                                </Label>
+                                <Col sm={5}>
+                                    <Input
+                                        id="exampleSelect"
+                                        name='role'
+                                        type="select"
+                                        onChange={(event) => { handleOnChangeInput(event) }}
+                                        value={updateuser.role}
+                                    >
+                                        <option>
+                                            Admin
+                                        </option>
+                                        <option>
+                                            Staff
+                                        </option>
+                                        <option>
+                                            Customer
+                                        </option>
+                                    </Input>
+                                </Col>
+                            </FormGroup>
+                        </Col>
+                        <Col md={6}>
+                            <FormGroup row className='exampleSelect'>
+                                <Label
+
+                                    for="exampleSelect"
+                                    sm={3}
+                                >
+                                    Position
+                                </Label>
+                                <Col sm={5}>
+                                    <Input
+                                        id="exampleSelect"
+                                        name='position'
+                                        type="select"
+                                        onChange={(event) => { handleOnChangeInput(event) }}
+                                        value={updateuser.position}
+                                    >
+                                        <option>
+                                            None
+                                        </option>
+                                        <option>
+                                            Nomal
+                                        </option>
+                                        <option>
+                                            VIP
+                                        </option>
+                                    </Input>
+                                </Col>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -263,6 +332,8 @@ export const ListUser = () => {
                             <td >{user.address}</td>
                             <td >{user.gender ? 'Nam' : 'Nữ'}</td>
                             <td >{user.phoneNumber}</td>
+                            <td >{user.role}</td>
+                            <td >{user.position}</td>
                             <td >
                                 <button><FontAwesomeIcon className="btn-edit" icon={['fas', 'fa-pen-to-square']} onClick={GetUserUpdate.bind(this, user)} /></button>{' '}
                                 <button><FontAwesomeIcon className="btn-trash" icon={['fas', 'fa-trash']} onClick={HandleDeleteUser.bind(this, user.email)} /></button>

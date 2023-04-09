@@ -67,6 +67,15 @@ mutation Mutation($email: String!, $passWord: String!) {
 }
 `
 
+export const registerUser = gql`
+mutation Mutation($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $role: Role, $phoneNumber: String, $position: Position) {
+  register(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, image: $image, role: $role, phoneNumber: $phoneNumber, position: $position) {
+    errCode
+    errMessage
+  }
+}
+`
+
 //Add user
 export const addNewUser = gql`
 mutation Mutation($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $role: Role, $phoneNumber: String, $position: Position) {
@@ -78,8 +87,8 @@ mutation Mutation($email: String!, $passWord: String, $firstName: String, $lastN
 `
 //Update user
 export const updateUser = gql`
-mutation UpdateUser($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $role: Role, $phoneNumber: String, $position: Position) {
-  updateUser(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, image: $image, role: $role, phoneNumber: $phoneNumber, position: $position) {
+mutation Mutation($passWord: String, $email: String!, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $role: Role, $phoneNumber: String, $position: Position) {
+  updateUser(passWord: $passWord, email: $email, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, image: $image, role: $role, phoneNumber: $phoneNumber, position: $position) {
     errCode
     errMessage
   }

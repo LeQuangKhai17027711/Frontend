@@ -3,15 +3,17 @@ import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { Table } from 'react-bootstrap';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './UserManage.scss'
 
 import { useMutation } from "@apollo/client";
-
 import { addNewUser, getAllUser } from '../graphql-client/queries.js';
 import { ListUser } from './UserList';
 
@@ -29,8 +31,8 @@ export const UserManage = () => {
         gender: false,
         image: '',
         phoneNumber: '',
-        role: 'CUSTOMER',
-        position: 'Nomal',
+        role: 'Admin',
+        position: 'None',
     })
 
 
@@ -97,8 +99,8 @@ export const UserManage = () => {
                     gender: newuser.gender,
                     image: newuser.image,
                     phoneNumber: newuser.phoneNumber,
-                    role: 'CUSTOMER',
-                    position: 'Nomal',
+                    role: newuser.role,
+                    position: newuser.position,
                 },
                 refetchQueries: [{ query: getAllUser }]
             })
@@ -111,8 +113,8 @@ export const UserManage = () => {
                 gender: false,
                 image: '',
                 phoneNumber: '',
-                role: 'CUSTOMER',
-                position: 'Nomal',
+                role: 'Admin',
+                position: 'None',
             })
 
             toggle()
@@ -122,6 +124,7 @@ export const UserManage = () => {
 
     //Get OnChange Value
     const handleOnChangeInput = (event) => {
+
         setNewUser({
             ...newuser,
             [event.target.name]: event.target.value
@@ -235,32 +238,30 @@ export const UserManage = () => {
                     </Row>
                     <Row>
                         <Col md={6}>
-                            <FormGroup row className='exampleSelect'>
-                                <Label
-
-                                    for="exampleSelect"
-                                    sm={3}
-                                >
-                                    Gender
-                                </Label>
-                                <Col sm={5}>
-                                    <Input
-                                        id="exampleSelect"
-                                        name='gender'
-                                        type="select"
-                                        onChange={(event) => { handleOnChangeInput(event) }}
-                                        value={newuser.gender}
-                                    >
-                                        <option>
-                                            Nữ
-                                        </option>
-                                        <option>
-                                            Nam
-                                        </option>
-
-                                    </Input>
-                                </Col>
-                            </FormGroup>
+                            <FormLabel id="radio-buttons-group-label">Gender</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="radio-buttons-group-label"
+                                name="gender"
+                                onChange={(event) => { handleOnChangeInput(event) }}
+                            >
+                                <FormControlLabel
+                                    value="Nữ"
+                                    control={<Radio />}
+                                    label="Nữ"
+                                />
+                                <FormControlLabel
+                                    value="Nam"
+                                    control={<Radio />}
+                                    label="Nam"
+                                />
+                                <FormControlLabel
+                                    value="disabled"
+                                    disabled
+                                    control={<Radio />}
+                                    label="Khác"
+                                />
+                            </RadioGroup>
                         </Col>
                         <Col md={6}>
                             <FormGroup>
@@ -274,6 +275,66 @@ export const UserManage = () => {
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.image}
                                 />
+                            </FormGroup>
+                        </Col>
+                        <Col md={6}>
+                            <FormGroup row className='exampleSelect'>
+                                <Label
+
+                                    for="exampleSelect"
+                                    sm={3}
+                                >
+                                    Role
+                                </Label>
+                                <Col sm={5}>
+                                    <Input
+                                        id="exampleSelect"
+                                        name='role'
+                                        type="select"
+                                        onChange={(event) => { handleOnChangeInput(event) }}
+                                        value={newuser.role}
+                                    >
+                                        <option>
+                                            Admin
+                                        </option>
+                                        <option>
+                                            Staff
+                                        </option>
+                                        <option>
+                                            Customer
+                                        </option>
+                                    </Input>
+                                </Col>
+                            </FormGroup>
+                        </Col>
+                        <Col md={6}>
+                            <FormGroup row className='exampleSelect'>
+                                <Label
+
+                                    for="exampleSelect"
+                                    sm={3}
+                                >
+                                    Position
+                                </Label>
+                                <Col sm={5}>
+                                    <Input
+                                        id="exampleSelect"
+                                        name='position'
+                                        type="select"
+                                        onChange={(event) => { handleOnChangeInput(event) }}
+                                        value={newuser.position}
+                                    >
+                                        <option>
+                                            None
+                                        </option>
+                                        <option>
+                                            Nomal
+                                        </option>
+                                        <option>
+                                            VIP
+                                        </option>
+                                    </Input>
+                                </Col>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -296,6 +357,8 @@ export const UserManage = () => {
                         <th>Address</th>
                         <th>Gender</th>
                         <th>PhoneNumber</th>
+                        <th>Role</th>
+                        <th>Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
