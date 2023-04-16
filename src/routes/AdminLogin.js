@@ -40,7 +40,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export const SignInSide = () => {
+export const AdminLogin = () => {
 
     const [variant, setVariant] = React.useState('')
     const [username, setName] = React.useState('')
@@ -97,7 +97,7 @@ export const SignInSide = () => {
             <ThemeProvider theme={theme}>
                 {
                     auth.isLoggedIn &&
-                    <Navigate to="/home" replace={true} />
+                    <Navigate to="/Admin" replace={true} />
                 }
                 <Grid container component="main" sx={{ height: '100vh' }}>
                     <CssBaseline />
@@ -125,11 +125,11 @@ export const SignInSide = () => {
                                 alignItems: 'center',
                             }}
                         >
-                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
                                 <LockOutlinedIcon />
                             </Avatar>
                             <Typography component="h1" variant="h5">
-                                Sign in
+                                Sign in for Admin
                             </Typography>
                             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                                 <TextField
@@ -171,18 +171,15 @@ export const SignInSide = () => {
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
+                                    color="success"
                                 >
                                     Sign In
                                 </Button>
                                 <Grid container>
-                                    <Grid item xs>
-                                        <Link href="#" variant="body2">
-                                        </Link>
+                                    <Grid item >
                                     </Grid>
                                     <Grid item>
-                                        <Link href="/register" variant="body2">
-                                            {"Don't have an account? Sign Up"}
-                                        </Link>
+
                                     </Grid>
                                 </Grid>
                                 <Copyright sx={{ mt: 5 }} />

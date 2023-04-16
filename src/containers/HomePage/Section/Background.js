@@ -11,7 +11,7 @@ export const Background = () => {
         <div className="home-header-banner">
             <div className="content-up">
                 <div className="title1">DỊCH VỤ BẢO TRÌ</div>
-                <div className="title2">cHĂM SÓC KHÁCH HÀNG TOÀN DIỆN</div>
+                <div className="title2">CHĂM SÓC KHÁCH HÀNG TOÀN DIỆN</div>
                 <div className="search">
                     <FontAwesomeIcon className="icon-search" icon={['fas', 'fa-search']} />
                     <input className="btn-search" type="text" placeholder='Tìm kiếm sản phẩm' />

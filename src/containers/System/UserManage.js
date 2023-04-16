@@ -21,6 +21,9 @@ import { ListUser } from './UserList';
 export const UserManage = () => {
     library.add(fas)
 
+
+
+
     //Get Users
     const [newuser, setNewUser] = useState({
         email: '',
@@ -37,52 +40,113 @@ export const UserManage = () => {
 
 
     const [modal, setModal] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [address, setAddress] = useState('');
+    const [phonenumber, setPhonenumber] = useState('');
+    const [image, setImage] = useState('');
+
 
     //Create User
 
     const [newUser, newUserData] = useMutation(addNewUser)
 
     //ShowHide Modal
-    const toggle = () => setModal(!modal);
+    const toggle = React.useCallback(() => {
+        setNewUser({
+            email: '',
+            passWord: '',
+            firstName: '',
+            lastName: '',
+            address: '',
+            gender: false,
+            image: '',
+            phoneNumber: '',
+            role: 'Admin',
+            position: 'None',
+        })
+        setModal(!modal);
+    }, [modal])
+
+    React.useEffect(() => {
+        if (newUserData.called === true) {
+            console.log(newUserData)
+            if (newUserData.data) {
+                if (newUserData.data.createUser.errCode === '1') {
+                    setEmail(newUserData.data.createUser.errMessage);
+                }
+                if (newUserData.data.createUser.errCode === '0') {
+                    toggle()
+                }
+            }
+        }
+    }, [newUserData, toggle]);
+
 
     //ValidateInput
     const checkValidInput = () => {
         let isValid = true;
-
+        const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
+        const regexPhone = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s.]{0,1}[0-9]{3}[-\s.]{0,1}[0-9]{4}$/;
         if (!newuser.email) {
             isValid = false;
-            alert('Missing parameter: Email')
+            setEmail(' * Missing parameter Email')
         }
-        else if (!newuser.passWord) {
+
+        else if (regex.test(newuser.email) === false) {
             isValid = false;
-            alert('Missing parameter: Password')
+            setEmail(" * Email is not valid !")
         }
-        else if (!newuser.firstName) {
+        if (!newuser.passWord) {
             isValid = false;
-            alert('Missing parameter: Firstname')
+            setPassword(' * Missing parameter Password')
         }
-        else if (!newuser.lastName) {
+        else if (newuser.passWord.length < 8) {
             isValid = false;
-            alert('Missing parameter: Lastname')
+            setPassword(" * Password >= 8 character!")
         }
-        else if (!newuser.address) {
+        if (!newuser.firstName) {
             isValid = false;
-            alert('Missing parameter: Address')
+            setFirstname(' * Missing parameter Firstname')
         }
-        else if (!newuser.phoneNumber) {
+        if (!newuser.lastName) {
             isValid = false;
-            alert('Missing parameter: Phone number')
+            setLastname(' * Missing parameter Lastname')
         }
-        else if (!newuser.image) {
+        if (!newuser.address) {
             isValid = false;
-            alert('Missing parameter: Image')
+            setAddress(' * Missing parameter Address')
         }
+        if (!newuser.phoneNumber) {
+            isValid = false;
+            setPhonenumber(' * Missing parameter Phone number')
+        }
+
+        else if (regexPhone.test(newuser.phoneNumber) === false) {
+            isValid = false;
+            setPhonenumber(" * Number exclude Character and Lengh number is = 10 !")
+        }
+        if (!newuser.image) {
+            isValid = false;
+            setImage(' * Missing parameter Image')
+        }
+
         return isValid;
     }
 
     //Add User
 
     const HandleAddNewUser = () => {
+
+        setEmail('')
+        setPassword('')
+        setFirstname('')
+        setLastname('')
+        setAddress('')
+        setPhonenumber('')
+        setImage('')
 
         if (checkValidInput(newuser)) {
             if (newuser.gender === "Nam")
@@ -104,20 +168,6 @@ export const UserManage = () => {
                 },
                 refetchQueries: [{ query: getAllUser }]
             })
-            setNewUser({
-                email: '',
-                passWord: '',
-                firstName: '',
-                lastName: '',
-                address: '',
-                gender: false,
-                image: '',
-                phoneNumber: '',
-                role: 'Admin',
-                position: 'None',
-            })
-
-            toggle()
         }
 
     }
@@ -135,7 +185,6 @@ export const UserManage = () => {
     return (
         <>
             <h3 className="title">MANAGE USERS WITH ADMIN</h3>
-
             <button type="button" className="btn btn-primary"
                 onClick={toggle}>
                 <FontAwesomeIcon className="btn-trash" icon={['fas', 'fa-plus']} /> Add new user </button>
@@ -158,6 +207,7 @@ export const UserManage = () => {
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.email}
                                 />
+                                <div className='mesage'>{email}</div>
                             </FormGroup>
                         </Col>
                         <Col md={6}>
@@ -173,6 +223,7 @@ export const UserManage = () => {
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.passWord}
                                 />
+                                <div className='mesage'>{password}</div>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -189,6 +240,7 @@ export const UserManage = () => {
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.firstName}
                                 />
+                                <div className='mesage'>{firstname}</div>
                             </FormGroup>
                         </Col>
                         <Col md={6}>
@@ -203,6 +255,7 @@ export const UserManage = () => {
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.lastName}
                                 />
+                                <div className='mesage'>{lastname}</div>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -219,6 +272,7 @@ export const UserManage = () => {
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.address}
                                 />
+                                <div className='mesage'>{address}</div>
                             </FormGroup>
                         </Col>
                         <Col md={6}>
@@ -233,6 +287,7 @@ export const UserManage = () => {
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.phoneNumber}
                                 />
+                                <div className='mesage'>{phonenumber}</div>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -243,6 +298,7 @@ export const UserManage = () => {
                                 row
                                 aria-labelledby="radio-buttons-group-label"
                                 name="gender"
+                                defaultValue="Nữ"
                                 onChange={(event) => { handleOnChangeInput(event) }}
                             >
                                 <FormControlLabel
@@ -261,6 +317,7 @@ export const UserManage = () => {
                                     control={<Radio />}
                                     label="Khác"
                                 />
+
                             </RadioGroup>
                         </Col>
                         <Col md={6}>
@@ -275,6 +332,7 @@ export const UserManage = () => {
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.image}
                                 />
+                                <div className='mesage'>{image}</div>
                             </FormGroup>
                         </Col>
                         <Col md={6}>
@@ -351,6 +409,7 @@ export const UserManage = () => {
             <Table striped bordered hover size="sm" >
                 <thead>
                     <tr>
+                        <th>STT</th>
                         <th>Email</th>
                         <th>FirstName</th>
                         <th>LastName</th>

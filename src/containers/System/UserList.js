@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter, FormGroup, Label, Input, Row, Col } from 'reactstrap';
@@ -105,8 +105,6 @@ export const ListUser = () => {
 
     //Get OnChange Value
     const handleOnChangeInput = (event) => {
-        console.log(event.target.name)
-        console.log(event.target.value)
         setUpdateUser({
             ...updateuser,
             [event.target.name]: event.target.value
@@ -326,6 +324,7 @@ export const ListUser = () => {
                 return (
                     <tr key={index}>
                         <>
+                            <td >{index + 1}</td>
                             <td >{user.email}</td>
                             <td >{user.firstName}</td>
                             <td >{user.lastName}</td>

@@ -31,17 +31,12 @@
         }
     }
 
-    .center-content {
-        width: 50%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
 
-        .child-content {
-            subs-title {
-                font-weight: 400;
-                font-size: 12px;
-            }
+    .center-content {
+        width: 70%;
+
+        .navbar {
+            height: 80%;
         }
     }
 
@@ -55,8 +50,16 @@
             font-size: small;
         }
 
-        .cart {
-            padding-left: 50px;
+        .bell {
+            padding-right: 60px;
         }
     }
+}
+
+.fixedTop {
+    width: 100%;
+    padding: 0px 20px;
+    position: sticky;
+    top: 0;
+    background-color: white;
 }

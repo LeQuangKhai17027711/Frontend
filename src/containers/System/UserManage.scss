@@ -12,6 +12,10 @@ Table {
     margin-top: 10px;
 }
 
+.mesage {
+    color: red;
+}
+
 .modalHeader {
     background-color: rgb(16, 99, 171);
     color: white;
@@ -35,4 +39,12 @@ thead {
     margin-left: -60px;
     position: absolute;
 
+}
+
+.list-user {
+    background: url('../../assets/image/icons8-user-30.png') center center no-repeat;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
