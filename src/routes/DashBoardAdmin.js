@@ -12,11 +12,17 @@ import ArticleIcon from '@mui/icons-material/Article';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Grid from '@mui/material/Unstable_Grid2';
 
+import { useDispatch } from 'react-redux'
+import { allActions } from '../store/actions'
 import { UserManage } from '../containers/System/UserManage';
 import { Dashboard } from '../containers/System/ServiceManage';
 
+import { useNavigate } from 'react-router-dom';
+
 export const BoardAdmin = () => {
 
+    const dispatch = useDispatch()
+    let navigate = useNavigate();
     const [dashboard, setDashBoad] = React.useState(true)
     const [user, setUser] = React.useState(false)
 
@@ -29,61 +35,74 @@ export const BoardAdmin = () => {
             setDashBoad(false)
             setUser(true)
         }
+        else if (event.target.innerHTML === "Đăng xuất") {
+            dispatch(allActions.processLogout())
+            localStorage.removeItem('user')
+            localStorage.removeItem('role')
+            navigate('/login-admin');
+        }
     }
 
     return (
         <>
-            <Box sx={{ width: '100%', bgcolor: 'background.paper', height: '100%', minHeight: 600, flexGrow: 1 }}>
-                <Grid container spacing={5}>
-                    <Grid xs={6} md={2}>
-                        <List
-                            aria-labelledby="nested-list-subheader"
-                            subheader={
-                                <ListSubheader component="div" id="nested-list-subheader">
-                                    Chức năng chính
-                                </ListSubheader>
-                            }
-                        >
-                            <ListItemButton onClick={(event) => handleListItemClick(event)}>
-                                <ListItemIcon>
-                                    <DashBoardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Dash board" />
-                            </ListItemButton>
-                            <ListItemButton onClick={(event) => handleListItemClick(event)}>
-                                <ListItemIcon >
-                                    <PersionIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Quản lý người dùng" />
-                            </ListItemButton>
-                            <ListItemButton onClick={(event) => handleListItemClick(event)}>
-                                <ListItemIcon>
-                                    <EngineeringIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Quản lý dịch vụ" />
-                            </ListItemButton>
-                            <ListItemButton onClick={(event) => handleListItemClick(event)} >
-                                <ListItemIcon>
-                                    <ArticleIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Blog" />
-                            </ListItemButton>
-                            <h4>Khác</h4>
-                            <ListItemButton onClick={(event) => handleListItemClick(event)} >
-                                <ListItemIcon>
-                                    <CalendarMonthIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Lịch hẹn" />
-                            </ListItemButton>
-                        </List>
+            <div className='main-container'>
+                <Box sx={{ width: '100%', bgcolor: 'background.paper', height: '100%', minHeight: 600, flexGrow: 1 }}>
+                    <Grid container spacing={5}>
+                        <Grid xs={6} md={2}>
+                            <List
+                                aria-labelledby="nested-list-subheader"
+                                subheader={
+                                    <ListSubheader component="div" id="nested-list-subheader">
+                                        Chức năng chính
+                                    </ListSubheader>
+                                }
+                            >
+                                <ListItemButton onClick={(event) => handleListItemClick(event)}>
+                                    <ListItemIcon>
+                                        <DashBoardIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Dash board" />
+                                </ListItemButton>
+                                <ListItemButton onClick={(event) => handleListItemClick(event)}>
+                                    <ListItemIcon >
+                                        <PersionIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Quản lý người dùng" />
+                                </ListItemButton>
+                                <ListItemButton onClick={(event) => handleListItemClick(event)}>
+                                    <ListItemIcon>
+                                        <EngineeringIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Quản lý dịch vụ" />
+                                </ListItemButton>
+                                <ListItemButton onClick={(event) => handleListItemClick(event)} >
+                                    <ListItemIcon>
+                                        <ArticleIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Phản hồi khách hàng" />
+                                </ListItemButton>
+                                <h4>Khác</h4>
+                                <ListItemButton onClick={(event) => handleListItemClick(event)} >
+                                    <ListItemIcon>
+                                        <CalendarMonthIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Lịch hẹn" />
+                                </ListItemButton>
+                                <ListItemButton onClick={(event) => handleListItemClick(event)} >
+                                    <ListItemIcon>
+                                        <CalendarMonthIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Đăng xuất" />
+                                </ListItemButton>
+                            </List>
+                        </Grid>
+                        <Grid xs={6} md={10}>
+                            {user && <UserManage />}
+                            {dashboard && <Dashboard />}
+                        </Grid>
                     </Grid>
-                    <Grid xs={6} md={10}>
-                        {user && <UserManage />}
-                        {dashboard && <Dashboard />}
-                    </Grid>
-                </Grid>
-            </Box >
-
+                </Box >
+            </div>
         </>
     );
 }

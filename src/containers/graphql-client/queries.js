@@ -4,72 +4,66 @@ import { gql } from '@apollo/client'
 
 // //Get all user
 export const getAllUser = gql`
-query Users {
+query User {
   users {
-    errCode
-    errMessage
     users {
+      address
       email
       firstName
-      lastName
-      address
-      phoneNumber
       gender
-      image
-      position
+      lastName
+      phoneNumber
       role
     }
+    errCode
+    errMessage
   }
 }
   `
 
 //Get user
-export const getUser =
-  gql`
-query User($email: String!) {
-  user(email: $email) {
-    errCode
-    errMessage
-    user {
-      email
-      firstName
-      lastName
-      address
-      phoneNumber
-      gender
-      image
-      role
-      position
+export const getUser = gql`
+  query Query($email: String!) {
+    user(email: $email) {
+      accessToken
+      errCode
+      errMessage
+      user {
+        address
+        email
+        firstName
+        gender
+        lastName
+        phoneNumber
+        role
+      }
     }
   }
-}
 `
 
 //Login
 export const loginUser = gql`
-mutation Mutation($email: String!, $passWord: String!) {
-  login(email: $email, passWord: $passWord) {
+mutation Login($email: String!, $passWord: String!, $role: String!) {
+  login(email: $email, passWord: $passWord, role: $role) {
     accessToken
     errCode
     errMessage
     user {
-      lastName
-      role
-      position
-      phoneNumber
-      image
-      gender
-      firstName
-      email
       address
+      email
+      firstName
+      gender
+      lastName
+      phoneNumber
+      role
     }
   }
 }
 `
 
 export const registerUser = gql`
-mutation Mutation($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $role: Role, $phoneNumber: String, $position: Position) {
-  register(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, image: $image, role: $role, phoneNumber: $phoneNumber, position: $position) {
+mutation Register($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $role: Role, $phoneNumber: String) {
+  register(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, role: $role, phoneNumber: $phoneNumber) {
     errCode
     errMessage
   }
@@ -78,8 +72,8 @@ mutation Mutation($email: String!, $passWord: String, $firstName: String, $lastN
 
 //Add user
 export const addNewUser = gql`
-mutation Mutation($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $role: Role, $phoneNumber: String, $position: Position) {
-  createUser(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, image: $image, role: $role, phoneNumber: $phoneNumber, position: $position) {
+mutation Mutation($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $role: Role, $phoneNumber: String) {
+  createUser(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, role: $role, phoneNumber: $phoneNumber) {
     errCode
     errMessage
   }
@@ -87,8 +81,8 @@ mutation Mutation($email: String!, $passWord: String, $firstName: String, $lastN
 `
 //Update user
 export const updateUser = gql`
-mutation Mutation($passWord: String, $email: String!, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $image: String, $role: Role, $phoneNumber: String, $position: Position) {
-  updateUser(passWord: $passWord, email: $email, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, image: $image, role: $role, phoneNumber: $phoneNumber, position: $position) {
+mutation UpdateUser($email: String!, $passWord: String, $firstName: String, $lastName: String, $address: String, $gender: Boolean, $role: Role, $phoneNumber: String) {
+  updateUser(email: $email, passWord: $passWord, firstName: $firstName, lastName: $lastName, address: $address, gender: $gender, role: $role, phoneNumber: $phoneNumber) {
     errCode
     errMessage
   }

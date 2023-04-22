@@ -56,7 +56,8 @@ export const AdminLogin = () => {
         login({
             variables: {
                 email: username,
-                passWord: password
+                passWord: password,
+                role: 'admin'
             }
         })
     }, [username, password, login])
@@ -84,6 +85,7 @@ export const AdminLogin = () => {
         if (dataLogin.data.login.errCode === "0") {
             setErrorMessage('');
             localStorage.setItem('user', JSON.stringify(dataLogin.data.login))
+            localStorage.setItem('role', JSON.stringify(dataLogin.data.login.user.role))
             dispatch(allActions.userLoginSuccess(dataLogin.data.login.user))
             enqueueSnackbar('Loggin success!', { variant });
 

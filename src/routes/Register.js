@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Input } from 'reactstrap';
 import { useMutation } from "@apollo/client";
@@ -36,7 +37,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignUp = () => {
-
+    const [check, setCheck] = React.useState(false)
     const [newUser, newUserData] = useMutation(registerUser)
     const [registerSuccess, setRegisterSuccess] = React.useState(false)
     const [variant, setVariant] = React.useState('')
@@ -48,11 +49,9 @@ export const SignUp = () => {
         firstName: '',
         lastName: '',
         address: '',
-        gender: false,
-        image: '',
+        gender: '',
         phoneNumber: '',
         role: 'Customer',
-        position: 'None',
     })
 
     const checkValidInput = () => {
@@ -60,8 +59,7 @@ export const SignUp = () => {
         const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
 
         if (!newuser.firstName || !newuser.passWord || !newuser.email
-            || !newuser.lastName || !newuser.address || !newuser.phoneNumber
-            || !newuser.image) {
+            || !newuser.lastName || !newuser.address || !newuser.phoneNumber) {
             isValid = false;
             alert('Missing parameter')
         } else if (regex.test(newuser.email) === false) {
@@ -72,11 +70,24 @@ export const SignUp = () => {
             isValid = false;
             alert("Password >= 8 character!")
         }
+        else if (newuser.gender === '') {
+            isValid = false;
+            alert("Choose gender!")
+        }
+        else if (check === false) {
+            isValid = false;
+            alert(" Check agree with all clauses!")
+        }
         else
             return isValid;
     }
 
+    const setCheckBox = () => {
+        setCheck(!check)
+    }
+
     React.useEffect(() => {
+
         newUser({
             variables: {
                 email: newuser.email,
@@ -85,26 +96,27 @@ export const SignUp = () => {
                 lastName: newuser.lastName,
                 address: newuser.address,
                 gender: newuser.gender,
-                image: newuser.image,
                 phoneNumber: newuser.phoneNumber,
                 role: 'Customer',
-                position: 'None',
             },
         })
-    }, [newuser, newUser]);
+
+    }, [check]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         setVariant('success')
+
         if (checkValidInput(newuser)) {
             if (newUserData) {
-
+                console.log(newUserData)
                 if (newUserData.data.register.errCode === "0") {
                     enqueueSnackbar('Register user success!', { variant });
                     setRegisterSuccess(!registerSuccess)
                 } else {
                     alert(newUserData.data.register.errMessage)
+                    setCheckBox()
                 }
             }
         }
@@ -125,7 +137,8 @@ export const SignUp = () => {
         if (event.target.name === "gender") {
             value = isGender(event.target.value)
         }
-
+        console.log(event.target.name)
+        console.log(event.target.value)
         setNewUser({
             ...newuser,
             [event.target.name]: value
@@ -134,7 +147,7 @@ export const SignUp = () => {
     return (
         <>
             <ThemeProvider theme={theme}>
-                {registerSuccess && <Navigate to="/home" replace={true} />}
+                {registerSuccess && <Navigate to="/login" replace={true} />}
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <Box
@@ -210,7 +223,26 @@ export const SignUp = () => {
                                         onChange={(event) => { handleOnChangeInput(event) }}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={6}>
+                                    <div >Gender</div>
+                                    <Input
+                                        id="exampleSelect"
+                                        name='gender'
+                                        type="select"
+                                        onChange={(event) => { handleOnChangeInput(event) }}
+                                    >
+                                        <option value=''>
+
+                                        </option>
+                                        <option value='Nữ'>
+                                            Nữ
+                                        </option>
+                                        <option value='Nam'>
+                                            Nam
+                                        </option>
+                                    </Input>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
                                         fullWidth
@@ -221,34 +253,11 @@ export const SignUp = () => {
                                         onChange={(event) => { handleOnChangeInput(event) }}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <Input
-                                        id="exampleSelect"
-                                        name='gender'
-                                        type="select"
-                                        onChange={(event) => { handleOnChangeInput(event) }}
-
-                                    >
-                                        <option value='Nữ'>
-                                            Nữ
-                                        </option>
-                                        <option value='Nam'>
-                                            Nam
-                                        </option>
-                                    </Input>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <Input
-                                        id="exampleFile"
-                                        name='image'
-                                        type="file"
-                                        onChange={(event) => { handleOnChangeInput(event) }}
-                                        value={newuser.image}
-                                    />
-                                </Grid>
                                 <Grid item xs={12}>
                                     <FormControlLabel
                                         control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                        onChange={() => { setCheckBox() }}
+                                        checked={check}
                                         label="I want to receive inspiration, marketing promotions and updates via email."
                                     />
                                 </Grid>

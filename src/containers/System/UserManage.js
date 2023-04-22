@@ -32,10 +32,9 @@ export const UserManage = () => {
         lastName: '',
         address: '',
         gender: false,
-        image: '',
         phoneNumber: '',
         role: 'Admin',
-        position: 'None',
+
     })
 
 
@@ -46,15 +45,13 @@ export const UserManage = () => {
     const [lastname, setLastname] = useState('');
     const [address, setAddress] = useState('');
     const [phonenumber, setPhonenumber] = useState('');
-    const [image, setImage] = useState('');
-
 
     //Create User
 
     const [newUser, newUserData] = useMutation(addNewUser)
 
     //ShowHide Modal
-    const toggle = React.useCallback(() => {
+    const toggle = () => {
         setNewUser({
             email: '',
             passWord: '',
@@ -62,27 +59,22 @@ export const UserManage = () => {
             lastName: '',
             address: '',
             gender: false,
-            image: '',
             phoneNumber: '',
             role: 'Admin',
-            position: 'None',
         })
         setModal(!modal);
-    }, [modal])
+    }
 
     React.useEffect(() => {
         if (newUserData.called === true) {
-            console.log(newUserData)
+
             if (newUserData.data) {
                 if (newUserData.data.createUser.errCode === '1') {
-                    setEmail(newUserData.data.createUser.errMessage);
-                }
-                if (newUserData.data.createUser.errCode === '0') {
-                    toggle()
+                    alert(newUserData.data.createUser.errMessage);
                 }
             }
         }
-    }, [newUserData, toggle]);
+    }, [newUserData.loading]);
 
 
     //ValidateInput
@@ -128,10 +120,6 @@ export const UserManage = () => {
             isValid = false;
             setPhonenumber(" * Number exclude Character and Lengh number is = 10 !")
         }
-        if (!newuser.image) {
-            isValid = false;
-            setImage(' * Missing parameter Image')
-        }
 
         return isValid;
     }
@@ -146,7 +134,6 @@ export const UserManage = () => {
         setLastname('')
         setAddress('')
         setPhonenumber('')
-        setImage('')
 
         if (checkValidInput(newuser)) {
             if (newuser.gender === "Nam")
@@ -161,13 +148,13 @@ export const UserManage = () => {
                     lastName: newuser.lastName,
                     address: newuser.address,
                     gender: newuser.gender,
-                    image: newuser.image,
                     phoneNumber: newuser.phoneNumber,
                     role: newuser.role,
-                    position: newuser.position,
                 },
                 refetchQueries: [{ query: getAllUser }]
             })
+
+            toggle()
         }
 
     }
@@ -219,7 +206,7 @@ export const UserManage = () => {
                                     id="examplePassword"
                                     name="passWord"
                                     placeholder="password placeholder"
-                                    type="password"
+                                    type="text"
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.passWord}
                                 />
@@ -321,24 +308,8 @@ export const UserManage = () => {
                             </RadioGroup>
                         </Col>
                         <Col md={6}>
-                            <FormGroup>
-                                <Label for="exampleFile">
-                                    Image
-                                </Label>
-                                <Input
-                                    id="exampleFile"
-                                    name='image'
-                                    type="file"
-                                    onChange={(event) => { handleOnChangeInput(event) }}
-                                    value={newuser.image}
-                                />
-                                <div className='mesage'>{image}</div>
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
                             <FormGroup row className='exampleSelect'>
                                 <Label
-
                                     for="exampleSelect"
                                     sm={3}
                                 >
@@ -365,36 +336,7 @@ export const UserManage = () => {
                                 </Col>
                             </FormGroup>
                         </Col>
-                        <Col md={6}>
-                            <FormGroup row className='exampleSelect'>
-                                <Label
 
-                                    for="exampleSelect"
-                                    sm={3}
-                                >
-                                    Position
-                                </Label>
-                                <Col sm={5}>
-                                    <Input
-                                        id="exampleSelect"
-                                        name='position'
-                                        type="select"
-                                        onChange={(event) => { handleOnChangeInput(event) }}
-                                        value={newuser.position}
-                                    >
-                                        <option>
-                                            None
-                                        </option>
-                                        <option>
-                                            Nomal
-                                        </option>
-                                        <option>
-                                            VIP
-                                        </option>
-                                    </Input>
-                                </Col>
-                            </FormGroup>
-                        </Col>
                     </Row>
                 </ModalBody>
                 <ModalFooter>
@@ -417,7 +359,6 @@ export const UserManage = () => {
                         <th>Gender</th>
                         <th>PhoneNumber</th>
                         <th>Role</th>
-                        <th>Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>

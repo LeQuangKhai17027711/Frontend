@@ -56,7 +56,8 @@ export const SignInSide = () => {
         login({
             variables: {
                 email: username,
-                passWord: password
+                passWord: password,
+                role: 'Customer'
             }
         })
     }, [username, password, login])
@@ -84,6 +85,7 @@ export const SignInSide = () => {
         if (dataLogin.data.login.errCode === "0") {
             setErrorMessage('');
             localStorage.setItem('user', JSON.stringify(dataLogin.data.login))
+            //localStorage.setItem('role', JSON.stringify(dataLogin.data.login.user.role))
             dispatch(allActions.userLoginSuccess(dataLogin.data.login.user))
             enqueueSnackbar('Loggin success!', { variant });
 
@@ -116,6 +118,7 @@ export const SignInSide = () => {
                         }}
                     />
                     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+
                         <Box
                             sx={{
                                 my: 8,
@@ -123,6 +126,7 @@ export const SignInSide = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
+
                             }}
                         >
                             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>

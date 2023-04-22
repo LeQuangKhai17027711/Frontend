@@ -41,7 +41,6 @@ const App = () => {
                   <Route path="/Staff" element={<BoardStaff />} />
                   <Route path="/Admin" element={<BoardAdmin />} />
                 </Routes>
-
               </BrowserRouter >
             </>
           </SnackbarProvider>
@@ -50,7 +49,5 @@ const App = () => {
     </ApolloProvider>
   );
 }
-
-
 
 export default App;

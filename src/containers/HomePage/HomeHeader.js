@@ -59,6 +59,7 @@ export const HomeHeader = () => {
 
     //Scrolling lock
     const stickyHeader = React.useRef()
+    console.log(stickyHeader)
     React.useLayoutEffect(() => {
         const mainHeader = document.getElementById('mainHeader')
         let fixedTop = stickyHeader.current.offsetTop
@@ -74,90 +75,95 @@ export const HomeHeader = () => {
 
     return (
         <>
-            <div className="home-header-container" id="mainHeader" ref={stickyHeader}>
-                <div className="home-header-content">
-                    <div className="left-content">
-                        <Link to='/' className='header-logo'></Link>
-                    </div>
-                    <div className='center-content'>
-                        <Navbar className="navbar" collapseOnSelect expand="lg" bg="white" variant="white">
-                            <Container >
-                                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                                <Navbar.Collapse id="responsive-navbar-nav" >
-                                    <Nav className="me-auto my-2 my-lg-0"
-                                        navbarScroll>
-                                        <Nav.Link as={Link} to="/about">
-                                            <h5><b>Giới thiệu công ty</b></h5>
-                                        </Nav.Link>
-                                        <Nav.Link as={Link} to="/about">
-                                            <h5><b>Dịch vụ bảo trì</b></h5>
-                                        </Nav.Link>
-                                    </Nav>
-                                </Navbar.Collapse>
-                            </Container>
-                        </Navbar>
-                    </div>
-                    <div className="right-content">
-                        <div className='bell'>
-                            <FontAwesomeIcon icon={['fas', 'fa-bell']} />
+            {
+                (localStorage.getItem('role') === JSON.stringify('Admin')) ? <></> : <> <div className="home-header-container" id="mainHeader" ref={stickyHeader}>
+                    <div className="home-header-content">
+                        <div className="left-content">
+                            <Link to='/' className='header-logo'></Link>
                         </div>
-                        <div className='support'>
-                            <Box sx={{ flexGrow: 0 }}>
-                                {auth.isLoggedIn ?
-                                    <>
+                        <div className='center-content'>
+                            <Navbar className="navbar" collapseOnSelect expand="lg" bg="white" variant="white">
+                                <Container >
+                                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                                    <Navbar.Collapse id="responsive-navbar-nav" >
+                                        <Nav className="me-auto my-2 my-lg-0"
+                                            navbarScroll>
+                                            <Nav.Link as={Link} to="/about">
+                                                <h5><b>Giới thiệu công ty</b></h5>
+                                            </Nav.Link>
+                                            <Nav.Link as={Link} to="/about">
+                                                <h5><b>Dịch vụ bảo trì</b></h5>
+                                            </Nav.Link>
+                                        </Nav>
+                                    </Navbar.Collapse>
+                                </Container>
+                            </Navbar>
+                        </div>
+                        <div className="right-content">
+                            <div className='bell'>
+                                <FontAwesomeIcon icon={['fas', 'fa-bell']} />
+                            </div>
+                            <div className='support'>
+                                <Box sx={{ flexGrow: 0 }}>
+                                    {auth.isLoggedIn ?
+                                        <>
 
-                                        <Tooltip >
-                                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                                <div className='user-profile'>
-                                                    <Avatar alt="Remy Sharp" src="https://pbs.twimg.com/profile_images/429442426038538240/6Ac9kykG_400x400.jpeg" />
-                                                    {auth.userInfo.role}
-                                                </div>
+                                            <Tooltip >
+                                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                                    <div className='user-profile'>
+                                                        <Avatar alt="Remy Sharp" src="https://pbs.twimg.com/profile_images/429442426038538240/6Ac9kykG_400x400.jpeg" />
+                                                        {auth.userInfo.role}
+                                                    </div>
 
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Menu
-                                            sx={{ mt: '45px' }}
-                                            id="menu-appbar"
-                                            anchorEl={anchorElUser}
-                                            anchorOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            keepMounted
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            open={Boolean(anchorElUser)}
-                                            onClose={handleCloseUserMenu}
-                                        >
-                                            <MenuItem >
-                                                <Typography align="center" variant="h6">{auth.userInfo.lastName}</Typography>
-                                            </MenuItem>
-                                            <Divider sx={{ my: 0 }} />
-                                            {settings.map((setting) => (
-                                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                                    <Typography textAlign="center">{setting}</Typography>
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Menu
+                                                sx={{ mt: '45px' }}
+                                                id="menu-appbar"
+                                                anchorEl={anchorElUser}
+                                                anchorOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                keepMounted
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                open={Boolean(anchorElUser)}
+                                                onClose={handleCloseUserMenu}
+                                            >
+                                                <MenuItem >
+                                                    <Typography align="center" variant="h6">{auth.userInfo.lastName}</Typography>
                                                 </MenuItem>
-                                            ))}
-                                        </Menu>
+                                                <Divider sx={{ my: 0 }} />
+                                                {settings.map((setting) => (
+                                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                                        <Typography textAlign="center">{setting}</Typography>
+                                                    </MenuItem>
+                                                ))}
+                                            </Menu>
+                                        </>
+                                        : <><Tooltip >
+                                            <Link to='/login'>
+                                                <IconButton sx={{ p: 0 }}>
+                                                    <Stack spacing={4}>
+                                                        <Avatar />
+                                                    </Stack>
+                                                </IconButton>
+                                            </Link>
+                                        </Tooltip>
+                                            {localStorage.removeItem('role')}
+                                        </>
+                                    }
+                                </Box>
+                            </div>
 
-                                    </>
-                                    : <Tooltip >
-                                        <Link to='/login'>
-                                            <IconButton sx={{ p: 0 }}>
-                                                <Stack spacing={4}>
-                                                    <Avatar />
-                                                </Stack>
-                                            </IconButton>
-                                        </Link>
-                                    </Tooltip>}
-                            </Box>
                         </div>
-
                     </div>
-                </div>
-            </div >
+                </div >
+                </>}
+
         </>
     )
 }

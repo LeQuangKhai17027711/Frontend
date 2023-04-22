@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter, FormGroup, Label, Input, Row, Col } from 'reactstrap';
@@ -6,6 +6,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
+
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import 'bootstrap/dist/css/bootstrap.css';
 import './UserManage.scss'
@@ -23,11 +24,10 @@ export const ListUser = () => {
         lastName: '',
         address: '',
         gender: false,
-        image: '',
         phoneNumber: '',
         role: 'Admin',
-        position: 'None',
     })
+
     const [modal, setModal] = useState(false);
     const [userupdate, datauser] = useMutation(updateUser)
     const [deleteuser, userdata] = useMutation(deleteUser)
@@ -41,15 +41,15 @@ export const ListUser = () => {
 
     //Delete user
     const HandleDeleteUser = (email) => {
-
-        deleteuser({
-            variables: {
-                email: email,
-            },
-            refetchQueries: [{ query: getAllUser }]
-        })
+        if (window.confirm(`Bạn muốn xóa user có email là ${email}`)) {
+            deleteuser({
+                variables: {
+                    email: email,
+                },
+                refetchQueries: [{ query: getAllUser }]
+            })
+        }
     }
-
     //Get User Update
     const GetUserUpdate = (user) => {
         toggle()
@@ -62,36 +62,36 @@ export const ListUser = () => {
             address: user.address,
             phoneNumber: user.phoneNumber,
             gender: user.gender,
-            image: null,
             role: user.role,
-            position: user.position,
         })
     }
 
     //Update user
     const HandleUpdateUser = () => {
-        if (updateuser) {
-            if (updateuser.gender === "Nam")
-                updateuser.gender = true
-            else
-                updateuser.gender = false
-
-            userupdate({
-                variables: {
-                    email: updateuser.email,
-                    passWord: updateuser.passWord,
-                    firstName: updateuser.firstName,
-                    lastName: updateuser.lastName,
-                    address: updateuser.address,
-                    phoneNumber: updateuser.phoneNumber,
-                    gender: updateuser.gender,
-                    image: updateuser.image,
-                    role: updateuser.role,
-                    position: updateuser.position,
-                },
-                refetchQueries: [{ query: getAllUser }]
-            })
-            toggle()
+        if (window.confirm(`Bạn update user có email là ${updateuser.email}`)) {
+            if (updateuser) {
+                if (updateuser.gender === "Nam") {
+                    updateuser.gender = true
+                }
+                else {
+                    updateuser.gender = false
+                }
+                console.log(updateuser)
+                userupdate({
+                    variables: {
+                        email: updateuser.email,
+                        passWord: updateuser.passWord,
+                        firstName: updateuser.firstName,
+                        lastName: updateuser.lastName,
+                        address: updateuser.address,
+                        phoneNumber: updateuser.phoneNumber,
+                        gender: updateuser.gender,
+                        role: updateuser.role,
+                    },
+                    refetchQueries: [{ query: getAllUser }]
+                })
+                toggle()
+            }
         }
     }
 
@@ -99,12 +99,14 @@ export const ListUser = () => {
     const handleResetPass = () => {
         setUpdateUser({
             ...updateuser,
-            passWord: '123456'
+            passWord: '12345678'
         })
     }
 
     //Get OnChange Value
     const handleOnChangeInput = (event) => {
+        console.log(event.target.name)
+        console.log(event.target.value)
         setUpdateUser({
             ...updateuser,
             [event.target.name]: event.target.value
@@ -114,7 +116,7 @@ export const ListUser = () => {
         <>
             <Modal isOpen={modal} toggle={toggle} size="lg" >
                 <ModalHeader toggle={toggle} className="modalHeader">
-                    Edit a user
+                    Thông tin người dùng
                 </ModalHeader>
                 <ModalBody>
                     <Row>
@@ -236,20 +238,6 @@ export const ListUser = () => {
                             </RadioGroup>
                         </Col>
                         <Col md={6}>
-                            <FormGroup>
-                                <Label for="exampleFile">
-                                    Image
-                                </Label>
-                                <Input
-                                    id="exampleFile"
-                                    name='image'
-                                    type="file"
-                                    onChange={(event) => { handleOnChangeInput(event) }}
-                                    value={updateuser.image}
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
                             <FormGroup row className='exampleSelect'>
                                 <Label
 
@@ -279,36 +267,6 @@ export const ListUser = () => {
                                 </Col>
                             </FormGroup>
                         </Col>
-                        <Col md={6}>
-                            <FormGroup row className='exampleSelect'>
-                                <Label
-
-                                    for="exampleSelect"
-                                    sm={3}
-                                >
-                                    Position
-                                </Label>
-                                <Col sm={5}>
-                                    <Input
-                                        id="exampleSelect"
-                                        name='position'
-                                        type="select"
-                                        onChange={(event) => { handleOnChangeInput(event) }}
-                                        value={updateuser.position}
-                                    >
-                                        <option>
-                                            None
-                                        </option>
-                                        <option>
-                                            Nomal
-                                        </option>
-                                        <option>
-                                            VIP
-                                        </option>
-                                    </Input>
-                                </Col>
-                            </FormGroup>
-                        </Col>
                     </Row>
                 </ModalBody>
                 <ModalFooter>
@@ -332,9 +290,8 @@ export const ListUser = () => {
                             <td >{user.gender ? 'Nam' : 'Nữ'}</td>
                             <td >{user.phoneNumber}</td>
                             <td >{user.role}</td>
-                            <td >{user.position}</td>
                             <td >
-                                <button><FontAwesomeIcon className="btn-edit" icon={['fas', 'fa-pen-to-square']} onClick={GetUserUpdate.bind(this, user)} /></button>{' '}
+                                <button><FontAwesomeIcon className="btn-edit" icon={['fas', 'fa-circle-info']} onClick={GetUserUpdate.bind(this, user)} /></button>{' '}
                                 <button><FontAwesomeIcon className="btn-trash" icon={['fas', 'fa-trash']} onClick={HandleDeleteUser.bind(this, user.email)} /></button>
                             </td>
                         </>

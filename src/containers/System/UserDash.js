@@ -16,19 +16,15 @@ export const DashUser = () => {
     library.add(fas)
     return (
         <>
-            <h6>Danh sách user</h6>
+            <h5>Danh sách user</h5>
             <Table striped bordered hover size="sm" >
                 <thead>
                     <tr>
                         <th>STT</th>
                         <th>Email</th>
-                        <th>FirstName</th>
                         <th>LastName</th>
-                        <th>Address</th>
                         <th>Gender</th>
-                        <th>PhoneNumber</th>
                         <th>Role</th>
-                        <th>Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,13 +35,9 @@ export const DashUser = () => {
                                 <>
                                     <td >{index + 1}</td>
                                     <td >{user.email}</td>
-                                    <td >{user.firstName}</td>
                                     <td >{user.lastName}</td>
-                                    <td >{user.address}</td>
                                     <td >{user.gender ? 'Nam' : 'Nữ'}</td>
-                                    <td >{user.phoneNumber}</td>
                                     <td >{user.role}</td>
-                                    <td >{user.position}</td>
                                 </>
                             </tr>
                         )
