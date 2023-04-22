@@ -59,7 +59,7 @@ export const HomeHeader = () => {
 
     //Scrolling lock
     const stickyHeader = React.useRef()
-    console.log(stickyHeader)
+
     React.useLayoutEffect(() => {
         const mainHeader = document.getElementById('mainHeader')
         let fixedTop = stickyHeader.current.offsetTop

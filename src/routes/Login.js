@@ -80,12 +80,11 @@ export const SignInSide = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
         setVariant('success')
         if (dataLogin.data.login.errCode === "0") {
             setErrorMessage('');
             localStorage.setItem('user', JSON.stringify(dataLogin.data.login))
-            //localStorage.setItem('role', JSON.stringify(dataLogin.data.login.user.role))
+            localStorage.setItem('role', JSON.stringify(dataLogin.data.login.user.role))
             dispatch(allActions.userLoginSuccess(dataLogin.data.login.user))
             enqueueSnackbar('Loggin success!', { variant });
 
