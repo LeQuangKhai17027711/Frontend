@@ -46,18 +46,18 @@ mutation CreateService($idSer: String!, $title: String, $image: String, $fee: St
 `
 //Update Service
 export const updateService = gql`
-mutation UpdateService($idSer: String!, $title: String, $image: String, $fee: String, $descript: String, $type: Type) {
-    updateService(idSer: $idSer, title: $title, image: $image, fee: $fee, descript: $descript, type: $type) {
-      errCode
-      errMessage
-    }
+mutation Mutation($idSer: String!, $title: String, $image: String, $fee: String, $descript: String, $type: Type) {
+  updateService(idSer: $idSer, title: $title, image: $image, fee: $fee, descript: $descript, type: $type) {
+    errCode
+    errMessage
   }
+}
 `
 
 // //Delete user
 export const deleteService = gql`
-mutation Mutation($email: String!) {
-  deleteUser(email: $email) {
+mutation DeleteService($idSer: String!) {
+  deleteService(idSer: $idSer) {
     errCode
     errMessage
   }

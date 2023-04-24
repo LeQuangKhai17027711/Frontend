@@ -21,9 +21,6 @@ import { ListUser } from './UserList';
 export const UserManage = () => {
     library.add(fas)
 
-
-
-
     //Get Users
     const [newuser, setNewUser] = useState({
         email: '',
@@ -34,7 +31,6 @@ export const UserManage = () => {
         gender: false,
         phoneNumber: '',
         role: 'Admin',
-
     })
 
 

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
+import React, { useState } from 'react'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import 'bootstrap/dist/css/bootstrap.css';
 import './UserManage.scss'
@@ -29,8 +29,8 @@ export const ListUser = () => {
     })
 
     const [modal, setModal] = useState(false);
-    const [userupdate, datauser] = useMutation(updateUser)
-    const [deleteuser, userdata] = useMutation(deleteUser)
+    const [userupdate,] = useMutation(updateUser)
+    const [deleteuser,] = useMutation(deleteUser)
 
     //ShowHide Modal
     const toggle = () => setModal(!modal);
@@ -76,7 +76,7 @@ export const ListUser = () => {
                 else {
                     updateuser.gender = false
                 }
-                console.log(updateuser)
+
                 userupdate({
                     variables: {
                         email: updateuser.email,
@@ -105,8 +105,7 @@ export const ListUser = () => {
 
     //Get OnChange Value
     const handleOnChangeInput = (event) => {
-        console.log(event.target.name)
-        console.log(event.target.value)
+
         setUpdateUser({
             ...updateuser,
             [event.target.name]: event.target.value

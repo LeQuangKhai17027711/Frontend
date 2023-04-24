@@ -18,6 +18,8 @@ import { BoardAdmin } from '../routes/DashBoardAdmin';
 import { BoardStaff } from '../routes/DashBoardStaff';
 import { BoardUser } from '../routes/DashBoardUser';
 import { IntroPage } from '../routes/IntroPage';
+import { ServicePage } from '../routes/ServicePage';
+import { DetailServicePage } from '../routes/DetailServicePage';
 
 
 const App = () => {
@@ -34,6 +36,8 @@ const App = () => {
                   <Route path="/" element={<HomeBody />} />
                   <Route path="/home" element={<HomeBody />} />
                   <Route path="/about" element={<IntroPage />} />
+                  <Route path="/service" element={<ServicePage />} />
+                  <Route path="/detail" element={<DetailServicePage />} />
                   <Route path="/register" element={<SignUp />} />
                   <Route path="/login" element={<SignInSide />} />
                   <Route path="/login-admin" element={<AdminLogin />} />

@@ -23,10 +23,11 @@ Table {
 
 thead {
 
-    background-color: rgb(46, 130, 78);
+    background-color: rgb(55, 148, 91);
 
     th {
         color: white;
+        text-align: center;
     }
 }
 
@@ -42,7 +43,15 @@ thead {
 }
 
 .list-user {
-    background: url('../../assets/image/icons8-user-30.png') center center no-repeat;
+    background: url('https://img.freepik.com/free-vector/meet-our-team-concept-landing-page_52683-11236.jpg?size=626&ext=jpg') center center no-repeat;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.list-service {
+    background: url('https://img.freepik.com/free-vector/flat-design-illustration-customer-support_23-2148887720.jpg?size=626&ext=jpg') center center no-repeat;
     height: 200px;
     background-repeat: no-repeat;
     background-size: cover;

@@ -5,146 +5,116 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { Table } from 'react-bootstrap';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './UserManage.scss'
 
 import { useMutation } from "@apollo/client";
-import { addNewUser, getAllUser } from '../graphql-client/queries.js';
-import { ListUser } from './UserList';
+import { addNewService, getAllService } from '../graphql-client/service-queries.js';
+import { ListService } from './ServiceList.js'
 
 
-export const UserManage = () => {
+export const ServiceManage = () => {
     library.add(fas)
 
-
-
-
-    //Get Users
+    //Get Services
     const [newservice, setNewservice] = useState({
         idSer: '',
         title: '',
         image: '',
         fee: '',
         descript: '',
-        type: '',
+        type: 'Hardware',
     })
 
 
     const [modal, setModal] = useState(false);
-    const [idSer, setIdser] = useState('');
+    const [, setIdser] = useState('');
     const [title, setTitle] = useState('');
     const [image, setImage] = useState('');
     const [fee, setFee] = useState('');
     const [descript, setDescript] = useState('');
     const [type, setType] = useState('');
+    //Create Service
 
-    //Create User
-
-    const [newService, newServiceData] = useMutation(addNewUser)
+    const [newService, newServiceData] = useMutation(addNewService)
 
     //ShowHide Modal
     const toggle = () => {
-        setNewUser({
-            idSer: '',
+        setNewservice({
+            idSer: ((Math.random() * 99) + 100).toFixed(0),
             title: '',
             image: '',
             fee: '',
             descript: '',
-            type: '',
+            type: 'Hardware',
         })
         setModal(!modal);
     }
 
     React.useEffect(() => {
-        if (newUserData.called === true) {
-            if (newUserData.data) {
-                if (newUserData.data.createUser.errCode === '1') {
-                    alert(newUserData.data.createUser.errMessage);
+        if (newServiceData.called === true) {
+            if (newServiceData.data) {
+                if (newServiceData.data.createService.errCode === '1') {
+                    alert(newServiceData.data.createService.errMessage);
                 }
             }
         }
-    }, [newUserData.loading]);
+    }, [newServiceData.loading]);
 
 
     //ValidateInput
     const checkValidInput = () => {
         let isValid = true;
 
-        if (!newservice.email) {
+        if (!newservice.title) {
             isValid = false;
-            setEmail(' * Missing parameter Email')
+            setTitle(' * Missing parameter Title')
         }
 
-        else if (regex.test(newservice.email) === false) {
+        if (!newservice.image) {
             isValid = false;
-            setEmail(" * Email is not valid !")
-        }
-        if (!newservice.passWord) {
-            isValid = false;
-            setPassword(' * Missing parameter Password')
-        }
-        else if (newservice.passWord.length < 8) {
-            isValid = false;
-            setPassword(" * Password >= 8 character!")
-        }
-        if (!newservice.firstName) {
-            isValid = false;
-            setFirstname(' * Missing parameter Firstname')
-        }
-        if (!newservice.lastName) {
-            isValid = false;
-            setLastname(' * Missing parameter Lastname')
-        }
-        if (!newservice.address) {
-            isValid = false;
-            setAddress(' * Missing parameter Address')
-        }
-        if (!newservice.phoneNumber) {
-            isValid = false;
-            setPhonenumber(' * Missing parameter Phone number')
+            setImage(' * Missing parameter Image')
         }
 
-        else if (regexPhone.test(newservice.phoneNumber) === false) {
+        if (!newservice.fee) {
             isValid = false;
-            setPhonenumber(" * Number exclude Character and Lengh number is = 10 !")
+            setFee(' * Missing parameter Fee')
         }
-
+        if (!newservice.descript) {
+            isValid = false;
+            setDescript(' * Missing parameter Descript')
+        }
+        if (!newservice.type) {
+            isValid = false;
+            setType(' * Missing parameter Type')
+        }
         return isValid;
     }
 
     //Add User
 
-    const HandleAddNewUser = () => {
+    const HandleAddNewService = () => {
 
-        setEmail('')
-        setPassword('')
-        setFirstname('')
-        setLastname('')
-        setAddress('')
-        setPhonenumber('')
+        setIdser('')
+        setTitle('')
+        setImage('')
+        setFee('')
+        setDescript('')
+        setType('Hardware')
 
         if (checkValidInput(newservice)) {
-            if (newservice.gender === "Nam")
-                newservice.gender = true
-            else
-                newservice.gender = false
-            newUser({
+
+            newService({
                 variables: {
-                    email: newservice.email,
-                    passWord: newservice.passWord,
-                    firstName: newservice.firstName,
-                    lastName: newservice.lastName,
-                    address: newservice.address,
-                    gender: newservice.gender,
-                    phoneNumber: newservice.phoneNumber,
-                    role: newservice.role,
+                    idSer: newservice.idSer,
+                    title: newservice.title,
+                    image: newservice.image,
+                    fee: newservice.fee,
+                    descript: newservice.descript,
+                    type: newservice.type,
                 },
-                refetchQueries: [{ query: getAllUser }]
+                refetchQueries: [{ query: getAllService }]
             })
 
             toggle()
@@ -154,8 +124,9 @@ export const UserManage = () => {
 
     //Get OnChange Value
     const handleOnChangeInput = (event) => {
-
-        setNewUser({
+        console.log(event.target.name)
+        console.log(event.target.value)
+        setNewservice({
             ...newservice,
             [event.target.name]: event.target.value
         })
@@ -164,176 +135,103 @@ export const UserManage = () => {
 
     return (
         <>
-            <h3 className="title">MANAGE USERS WITH ADMIN</h3>
+            <h3 className="title">MANAGE SERVICE WITH ADMIN</h3>
             <button type="button" className="btn btn-primary"
                 onClick={toggle}>
                 <FontAwesomeIcon className="btn-trash" icon={['fas', 'fa-plus']} /> Add new user </button>
             <Modal isOpen={modal} toggle={toggle} size="lg" >
                 <ModalHeader toggle={toggle} className="modalHeader">
-                    Create a new user
+                    Create a new service
                 </ModalHeader>
                 <ModalBody>
                     <Row>
                         <Col md={6}>
                             <FormGroup>
-                                <Label for="exampleEmail">
-                                    Email
+                                <Label for="exampleTitle">
+                                    Title
                                 </Label>
                                 <Input
-                                    id="exampleEmail"
-                                    name="email"
+                                    id="exampleTitle"
+                                    name="title"
                                     placeholder="with a placeholder"
-                                    type="email"
-                                    onChange={(event) => { handleOnChangeInput(event) }}
-                                    value={newservice.email}
-                                />
-                                <div className='mesage'>{email}</div>
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label for="examplePassword">
-                                    Password
-                                </Label>
-                                <Input
-                                    id="examplePassword"
-                                    name="passWord"
-                                    placeholder="password placeholder"
                                     type="text"
                                     onChange={(event) => { handleOnChangeInput(event) }}
-                                    value={newservice.passWord}
+                                    value={newservice.title}
                                 />
-                                <div className='mesage'>{password}</div>
+                                <div className='mesage'>{title}</div>
+                            </FormGroup>
+                        </Col>
+                        <Col md={6}>
+                            <FormGroup>
+                                <Label for="exampleImage">
+                                    Image
+                                </Label>
+                                <Input
+                                    id="exampleImage"
+                                    name="image"
+                                    type="url"
+                                    onChange={(event) => { handleOnChangeInput(event) }}
+                                />
+                                <div className='mesage'>{image}</div>
                             </FormGroup>
                         </Col>
                     </Row>
                     <Row>
                         <Col md={6}>
                             <FormGroup>
-                                <Label for="exampleFirstName">
-                                    First Name
+                                <Label for="exampleFee">
+                                    Fee
                                 </Label>
                                 <Input
-                                    id="exampleFirstName"
-                                    name="firstName"
-                                    placeholder="Nguyễn Văn "
+                                    id="exampleFee"
+                                    name="fee"
                                     onChange={(event) => { handleOnChangeInput(event) }}
-                                    value={newservice.firstName}
+                                    value={newservice.fee}
                                 />
-                                <div className='mesage'>{firstname}</div>
+                                <div className='mesage'>{fee}</div>
                             </FormGroup>
                         </Col>
                         <Col md={6}>
                             <FormGroup>
-                                <Label for="exampleLastName">
-                                    Last Name
+                                <Label for="exampleDescript">
+                                    Descript
                                 </Label>
                                 <Input
-                                    id="exampleLastName"
-                                    name="lastName"
-                                    placeholder="Tèo"
+                                    id="exampleDescript"
+                                    name="descript"
+                                    placeholder="Mô tả..."
                                     onChange={(event) => { handleOnChangeInput(event) }}
-                                    value={newservice.lastName}
+                                    value={newservice.descript}
                                 />
-                                <div className='mesage'>{lastname}</div>
+                                <div className='mesage'>{descript}</div>
                             </FormGroup>
                         </Col>
                     </Row>
                     <Row>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label for="exampleAddress">
-                                    Address
-                                </Label>
-                                <Input
-                                    id="exampleAddress"
-                                    name="address"
-                                    placeholder="1234 Main St"
-                                    onChange={(event) => { handleOnChangeInput(event) }}
-                                    value={newservice.address}
-                                />
-                                <div className='mesage'>{address}</div>
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label for="exampleNumber">
-                                    Number
-                                </Label>
-                                <Input
-                                    id="exampleNumber"
-                                    name="phoneNumber"
-                                    placeholder="number placeholder"
-                                    onChange={(event) => { handleOnChangeInput(event) }}
-                                    value={newservice.phoneNumber}
-                                />
-                                <div className='mesage'>{phonenumber}</div>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={6}>
-                            <FormLabel id="radio-buttons-group-label">Gender</FormLabel>
-                            <RadioGroup
-                                row
-                                aria-labelledby="radio-buttons-group-label"
-                                name="gender"
-                                defaultValue="Nữ"
+                        <Col sm={5}>
+                            <Input
+                                id="exampleSelect"
+                                name='type'
+                                type="select"
                                 onChange={(event) => { handleOnChangeInput(event) }}
+                                value={newservice.type}
                             >
-                                <FormControlLabel
-                                    value="Nữ"
-                                    control={<Radio />}
-                                    label="Nữ"
-                                />
-                                <FormControlLabel
-                                    value="Nam"
-                                    control={<Radio />}
-                                    label="Nam"
-                                />
-                                <FormControlLabel
-                                    value="disabled"
-                                    disabled
-                                    control={<Radio />}
-                                    label="Khác"
-                                />
-
-                            </RadioGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup row className='exampleSelect'>
-                                <Label
-                                    for="exampleSelect"
-                                    sm={3}
-                                >
-                                    Role
-                                </Label>
-                                <Col sm={5}>
-                                    <Input
-                                        id="exampleSelect"
-                                        name='role'
-                                        type="select"
-                                        onChange={(event) => { handleOnChangeInput(event) }}
-                                        value={newservice.role}
-                                    >
-                                        <option>
-                                            Admin
-                                        </option>
-                                        <option>
-                                            Staff
-                                        </option>
-                                        <option>
-                                            Customer
-                                        </option>
-                                    </Input>
-                                </Col>
-                            </FormGroup>
+                                <option>
+                                    Hardware
+                                </option>
+                                <option>
+                                    Software
+                                </option>
+                                <option>
+                                    Orther
+                                </option>
+                            </Input>
                         </Col>
 
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={() => HandleAddNewUser()}>
+                    <Button color="primary" onClick={() => HandleAddNewService()}>
                         Save changes
                     </Button>{' '}
                     <Button color="secondary" onClick={toggle}>
@@ -345,18 +243,16 @@ export const UserManage = () => {
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Email</th>
-                        <th>FirstName</th>
-                        <th>LastName</th>
-                        <th>Address</th>
-                        <th>Gender</th>
-                        <th>PhoneNumber</th>
-                        <th>Role</th>
+                        <th>Title</th>
+                        <th>Image</th>
+                        <th>Fee</th>
+                        <th>Descript</th>
+                        <th>Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <ListUser />
+                    <ListService />
                 </tbody>
             </Table>
         </>

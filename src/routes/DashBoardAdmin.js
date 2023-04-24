@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux'
 import { allActions } from '../store/actions'
 import { UserManage } from '../containers/System/UserManage';
 import { Dashboard } from '../containers/System/ServiceManage';
+import { ServiceManage } from '../containers/System/ServiceManager';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -25,15 +26,23 @@ export const BoardAdmin = () => {
     let navigate = useNavigate();
     const [dashboard, setDashBoad] = React.useState(true)
     const [user, setUser] = React.useState(false)
+    const [service, setService] = React.useState(false)
 
     const handleListItemClick = (event) => {
 
         if (event.target.innerHTML === "Dash board") {
-            setDashBoad(true)
+            setService(false)
             setUser(false)
+            setDashBoad(true)
         } else if (event.target.innerHTML === "Quản lý người dùng") {
+            setService(false)
             setDashBoad(false)
             setUser(true)
+        }
+        else if (event.target.innerHTML === "Quản lý dịch vụ") {
+            setDashBoad(false)
+            setUser(false)
+            setService(true)
         }
         else if (event.target.innerHTML === "Đăng xuất") {
             dispatch(allActions.processLogout())
@@ -99,6 +108,7 @@ export const BoardAdmin = () => {
                         <Grid xs={6} md={10}>
                             {user && <UserManage />}
                             {dashboard && <Dashboard />}
+                            {service && <ServiceManage />}
                         </Grid>
                     </Grid>
                 </Box >

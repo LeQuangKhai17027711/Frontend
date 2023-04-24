@@ -91,7 +91,7 @@ export const HomeHeader = () => {
                                             <Nav.Link as={Link} to="/about">
                                                 <h5><b>Giới thiệu công ty</b></h5>
                                             </Nav.Link>
-                                            <Nav.Link as={Link} to="/about">
+                                            <Nav.Link as={Link} to="/service">
                                                 <h5><b>Dịch vụ bảo trì</b></h5>
                                             </Nav.Link>
                                         </Nav>
