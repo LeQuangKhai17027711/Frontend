@@ -137,8 +137,7 @@ export const SignUp = () => {
         if (event.target.name === "gender") {
             value = isGender(event.target.value)
         }
-        console.log(event.target.name)
-        console.log(event.target.value)
+
         setNewUser({
             ...newuser,
             [event.target.name]: value

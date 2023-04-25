@@ -9,14 +9,16 @@ import DashBoardIcon from '@mui/icons-material/Dashboard';
 import PersionIcon from '@mui/icons-material/Person';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import ArticleIcon from '@mui/icons-material/Article';
+import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Grid from '@mui/material/Unstable_Grid2';
 
 import { useDispatch } from 'react-redux'
 import { allActions } from '../store/actions'
 import { UserManage } from '../containers/System/UserManage';
-import { Dashboard } from '../containers/System/ServiceManage';
-import { ServiceManage } from '../containers/System/ServiceManager';
+import { Dashboard } from '../containers/System/ServiceManager';
+import { ServiceManage } from '../containers/System/ServiceManage';
+import { AppoinmentManage } from '../containers/System/AppoinmentManage'
 
 import { useNavigate } from 'react-router-dom';
 
@@ -27,22 +29,32 @@ export const BoardAdmin = () => {
     const [dashboard, setDashBoad] = React.useState(true)
     const [user, setUser] = React.useState(false)
     const [service, setService] = React.useState(false)
+    const [appointment, setAppointment] = React.useState(false)
 
     const handleListItemClick = (event) => {
 
         if (event.target.innerHTML === "Dash board") {
             setService(false)
+            setAppointment(false)
             setUser(false)
             setDashBoad(true)
         } else if (event.target.innerHTML === "Quản lý người dùng") {
             setService(false)
+            setAppointment(false)
             setDashBoad(false)
             setUser(true)
         }
         else if (event.target.innerHTML === "Quản lý dịch vụ") {
             setDashBoad(false)
             setUser(false)
+            setAppointment(false)
             setService(true)
+        }
+        else if (event.target.innerHTML === "Lịch hẹn") {
+            setDashBoad(false)
+            setUser(false)
+            setService(false)
+            setAppointment(true)
         }
         else if (event.target.innerHTML === "Đăng xuất") {
             dispatch(allActions.processLogout())
@@ -99,7 +111,7 @@ export const BoardAdmin = () => {
                                 </ListItemButton>
                                 <ListItemButton onClick={(event) => handleListItemClick(event)} >
                                     <ListItemIcon>
-                                        <CalendarMonthIcon />
+                                        <LogoutIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Đăng xuất" />
                                 </ListItemButton>
@@ -109,6 +121,7 @@ export const BoardAdmin = () => {
                             {user && <UserManage />}
                             {dashboard && <Dashboard />}
                             {service && <ServiceManage />}
+                            {appointment && <AppoinmentManage />}
                         </Grid>
                     </Grid>
                 </Box >

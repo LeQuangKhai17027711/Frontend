@@ -1,96 +1,264 @@
-import * as React from 'react';
+import React, { useState } from 'react'
 
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import { Card, CardBody, CardTitle } from 'reactstrap'
-import { DashUser } from './UserDash';
-import { DashService } from './ServiceDash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { Button, Modal, ModalBody, ModalHeader, ModalFooter, FormGroup, Label, Input, Row, Col } from 'reactstrap';
+import { Table } from 'react-bootstrap';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import './UserManage.scss'
+
+import { useMutation } from "@apollo/client";
+import { addNewService, getAllService } from '../graphql-client/service-queries.js';
+import { ListService } from './ServiceList.js'
 
 
-export const Dashboard = () => {
-    const [countUser, setCountUser] = React.useState(0)
-    //const [countFeedback, setCountFeedback] = React.useState(0)
-    const [countService, setCountService] = React.useState(0)
+export const ServiceManage = () => {
+    library.add(fas)
+
+    //Get Services
+    const [newservice, setNewservice] = useState({
+        idSer: '',
+        title: '',
+        image: '',
+        fee: '',
+        descript: '',
+        type: 'Hardware',
+    })
+
+
+    const [modal, setModal] = useState(false);
+    const [, setIdser] = useState('');
+    const [title, setTitle] = useState('');
+    const [image, setImage] = useState('');
+    const [fee, setFee] = useState('');
+    const [descript, setDescript] = useState('');
+    const [type, setType] = useState('');
+    //Create Service
+
+    const [newService, newServiceData] = useMutation(addNewService)
+
+    //ShowHide Modal
+    const toggle = () => {
+        setNewservice({
+            idSer: ((Math.random() * 99) + 100).toFixed(0),
+            title: '',
+            image: '',
+            fee: '',
+            descript: '',
+            type: 'Hardware',
+        })
+        setModal(!modal);
+    }
 
     React.useEffect(() => {
-        setCountUser(localStorage.getItem('numberuser'))
-        setCountService(localStorage.getItem('numberservice'))
-    }, [countUser, countService]);
+        if (newServiceData.called === true) {
+            if (newServiceData.data) {
+                if (newServiceData.data.createService.errCode === '1') {
+                    alert(newServiceData.data.createService.errMessage);
+                }
+            }
+        }
+    }, [newServiceData.loading]);
+
+
+    //ValidateInput
+    const checkValidInput = () => {
+        let isValid = true;
+
+        if (!newservice.title) {
+            isValid = false;
+            setTitle(' * Missing parameter Title')
+        }
+
+        if (!newservice.image) {
+            isValid = false;
+            setImage(' * Missing parameter Image')
+        }
+
+        if (!newservice.fee) {
+            isValid = false;
+            setFee(' * Missing parameter Fee')
+        }
+        if (!newservice.descript) {
+            isValid = false;
+            setDescript(' * Missing parameter Descript')
+        }
+        if (!newservice.type) {
+            isValid = false;
+            setType(' * Missing parameter Type')
+        }
+        return isValid;
+    }
+
+    //Add User
+
+    const HandleAddNewService = () => {
+
+        setIdser('')
+        setTitle('')
+        setImage('')
+        setFee('')
+        setDescript('')
+        setType('Hardware')
+
+        if (checkValidInput(newservice)) {
+
+            newService({
+                variables: {
+                    idSer: newservice.idSer,
+                    title: newservice.title,
+                    image: newservice.image,
+                    fee: newservice.fee,
+                    descript: newservice.descript,
+                    type: newservice.type,
+                },
+                refetchQueries: [{ query: getAllService }]
+            })
+
+            toggle()
+        }
+
+    }
+
+    //Get OnChange Value
+    const handleOnChangeInput = (event) => {
+        console.log(event.target.name)
+        console.log(event.target.value)
+        setNewservice({
+            ...newservice,
+            [event.target.name]: event.target.value
+        })
+    }
+
 
     return (
         <>
-            <h1 style={{ marginBottom: '20px', marginTop: '30px' }}>Dash board</h1>
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={7}>
-                    <Grid item xs={6} md={3}>
-                        <Card
-                            style={{
-                                width: '100%',
-                                backgroundColor: 'lightblue'
-                            }}
-                        >
-                            <CardBody>
-                                <CardTitle tag="h5" style={{ textAlign: "center" }}>
-                                    Tổng người dùng
-                                </CardTitle>
-                            </CardBody>
-                            <div className='list-user' />
-                            <CardBody>
-                                <h5 style={{ textAlign: "center" }} >{countUser}</h5>
-                                <h6 style={{ textAlign: "center" }} >Người</h6>
-                            </CardBody>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Card
-                            style={{
-                                width: '100%',
-                                backgroundColor: 'lightskyblue'
-                            }}
-                        >
-                            <CardBody>
-                                <CardTitle tag="h5" style={{ textAlign: "center" }}>
-                                    Tổng dịch vụ
-                                </CardTitle>
-                            </CardBody>
-                            <div className='list-service' />
-                            <CardBody>
-                                <h5 style={{ textAlign: "center" }} >{countService}</h5>
-                                <h6 style={{ textAlign: "center" }} >Dịch vụ</h6>
-                            </CardBody>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Card
-                            style={{
-                                width: '100%',
-                                backgroundColor: 'lightgreen'
-                            }}
-                        >
-                            <CardBody>
-                                <CardTitle tag="h5" style={{ textAlign: "center" }}>
-                                    Tổng người dùng
-                                </CardTitle>
-                            </CardBody>
-                            <img
-                                alt="Card cap"
-                                src="https://picsum.photos/318/180"
-                                width="100%"
-                            />
-                            <CardBody>
-                                <h5 style={{ textAlign: "center" }} >{countUser}</h5>
-                                <h6 style={{ textAlign: "center" }} >Người</h6>
-                            </CardBody>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={6} md={6}>
-                        <DashUser />
-                    </Grid>
-                    <Grid item xs={6} md={6}>
-                        <DashService />
-                    </Grid>
-                </Grid>
-            </Box >
+            <h3 className="title">MANAGE SERVICE WITH ADMIN</h3>
+            <button type="button" className="btn btn-primary"
+                onClick={toggle}>
+                <FontAwesomeIcon className="btn-trash" icon={['fas', 'fa-plus']} /> Add new user </button>
+            <Modal isOpen={modal} toggle={toggle} size="lg" >
+                <ModalHeader toggle={toggle} className="modalHeader">
+                    Create a new service
+                </ModalHeader>
+                <ModalBody>
+                    <Row>
+                        <Col md={6}>
+                            <FormGroup>
+                                <Label for="exampleTitle">
+                                    Title
+                                </Label>
+                                <Input
+                                    id="exampleTitle"
+                                    name="title"
+                                    placeholder="with a placeholder"
+                                    type="text"
+                                    onChange={(event) => { handleOnChangeInput(event) }}
+                                    value={newservice.title}
+                                />
+                                <div className='mesage'>{title}</div>
+                            </FormGroup>
+                        </Col>
+                        <Col md={6}>
+                            <FormGroup>
+                                <Label for="exampleImage">
+                                    Image
+                                </Label>
+                                <Input
+                                    id="exampleImage"
+                                    name="image"
+                                    type="url"
+                                    onChange={(event) => { handleOnChangeInput(event) }}
+                                />
+                                <div className='mesage'>{image}</div>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={6}>
+                            <FormGroup>
+                                <Label for="exampleFee">
+                                    Fee
+                                </Label>
+                                <Input
+                                    id="exampleFee"
+                                    name="fee"
+                                    onChange={(event) => { handleOnChangeInput(event) }}
+                                    value={newservice.fee}
+                                />
+                                <div className='mesage'>{fee}</div>
+                            </FormGroup>
+                        </Col>
+                        <Col md={6}>
+                            <FormGroup>
+                                <Label for="exampleDescript">
+                                    Descript
+                                </Label>
+                                <Input
+                                    id="exampleDescript"
+                                    name="descript"
+                                    placeholder="Mô tả..."
+                                    onChange={(event) => { handleOnChangeInput(event) }}
+                                    value={newservice.descript}
+                                />
+                                <div className='mesage'>{descript}</div>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col sm={5}>
+                            <Input
+                                id="exampleSelect"
+                                name='type'
+                                type="select"
+                                onChange={(event) => { handleOnChangeInput(event) }}
+                                value={newservice.type}
+                            >
+                                <option>
+                                    Hardware
+                                </option>
+                                <option>
+                                    Software
+                                </option>
+                                <option>
+                                    Orther
+                                </option>
+                            </Input>
+                        </Col>
+
+                    </Row>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={() => HandleAddNewService()}>
+                        Save changes
+                    </Button>{' '}
+                    <Button color="secondary" onClick={toggle}>
+                        Close
+                    </Button>
+                </ModalFooter>
+            </Modal>
+            <Table striped bordered hover size="sm" >
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Title</th>
+                        <th>Image</th>
+                        <th>Fee</th>
+                        <th>Descript</th>
+                        <th>Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ListService />
+                </tbody>
+            </Table>
         </>
     );
 }
+
+
+
+

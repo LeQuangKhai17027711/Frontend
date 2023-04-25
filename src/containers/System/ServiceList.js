@@ -47,7 +47,7 @@ export const ListService = () => {
     //Get User Update
     const GetServiceUpdate = (service) => {
         toggle()
-        console.log(service)
+
         setUpdateService({
             idSer: service.idSer,
             title: service.title,
