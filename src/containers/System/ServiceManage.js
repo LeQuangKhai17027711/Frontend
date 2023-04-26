@@ -34,7 +34,7 @@ export const ServiceManage = () => {
     const [image, setImage] = useState('');
     const [fee, setFee] = useState('');
     const [descript, setDescript] = useState('');
-    const [type, setType] = useState('');
+    const [, setType] = useState('');
     //Create Service
 
     const [newService, newServiceData] = useMutation(addNewService)

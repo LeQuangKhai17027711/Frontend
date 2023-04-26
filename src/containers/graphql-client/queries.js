@@ -91,8 +91,8 @@ mutation UpdateUser($email: String!, $passWord: String, $firstName: String, $las
 
 // //Delete user
 export const deleteUser = gql`
-mutation DeleteService($idSer: String!) {
-  deleteService(idSer: $idSer) {
+mutation Mutation($email: String!) {
+  deleteUser(email: $email) {
     errCode
     errMessage
   }

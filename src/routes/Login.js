@@ -44,7 +44,7 @@ export const SignInSide = () => {
 
     const [variant, setVariant] = React.useState('')
     const [username, setName] = React.useState('')
-    const [password, setPassWord] = React.useState('')
+    const [password, setPassWord] = React.useState('12345678')
     const [errormessage, setErrorMessage] = React.useState('')
     const [isShowPassWord, setPass] = React.useState(false)
     const [login, dataLogin] = useMutation(loginUser)
@@ -83,8 +83,6 @@ export const SignInSide = () => {
         setVariant('success')
         if (dataLogin.data.login.errCode === "0") {
             setErrorMessage('');
-            localStorage.setItem('user', JSON.stringify(dataLogin.data.login))
-            localStorage.setItem('role', JSON.stringify(dataLogin.data.login.user.role))
             dispatch(allActions.userLoginSuccess(dataLogin.data.login.user))
             enqueueSnackbar('Loggin success!', { variant });
 
@@ -153,7 +151,8 @@ export const SignInSide = () => {
                                     required
                                     fullWidth
                                     name="password"
-                                    label="Password"
+                                    value="12345678"
+                                    //label="Password"
                                     type={isShowPassWord ? 'text' : 'password'}
                                     id="password"
                                     autoComplete="current-password"
@@ -163,7 +162,7 @@ export const SignInSide = () => {
                                     <span onClick={() => handleShowHidePassword()} className="eyeshow">{isShowPassWord ? 'hide' : 'show'}</span>
                                 </div>
                                 <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary" />}
+                                    control={<Checkbox value="remember" checked color="primary" />}
                                     label="Remember me"
                                 />
                                 <div className="col-12" style={{ color: 'red' }}>

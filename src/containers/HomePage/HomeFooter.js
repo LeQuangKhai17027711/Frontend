@@ -20,9 +20,9 @@ export const HomeFooter = () => {
                             <span className="logo_name">DỊCH VỤ BẢO TRÌ</span>
                         </div>
                         <div className="media-icons">
-                            <a href="#"><FontAwesomeIcon className="facebook" icon={['fab', 'facebook']} /></a>
-                            <a href="#"><FontAwesomeIcon className="twitter" icon={['fab', 'twitter']} /></a>
-                            <a href="#"><FontAwesomeIcon className="instagram" icon={['fab', 'instagram']} /></a>
+                            <a ><FontAwesomeIcon className="facebook" icon={['fab', 'facebook']} /></a>
+                            <a ><FontAwesomeIcon className="twitter" icon={['fab', 'twitter']} /></a>
+                            <a ><FontAwesomeIcon className="instagram" icon={['fab', 'instagram']} /></a>
 
                         </div>
                     </div>

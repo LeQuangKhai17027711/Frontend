@@ -114,6 +114,7 @@ export const ListService = () => {
                                 Image
                             </Label>
                             <Input
+
                                 id="exampleImage"
                                 name="image"
                                 placeholder="with a placeholder"
@@ -124,7 +125,9 @@ export const ListService = () => {
                         </Col >
                         <Col md={3}>
                             <img src={updateservice.image}
+                                alt='Ảnh'
                                 style={{
+
                                     width: '200px',
                                     height: '70px',
                                     paddingRight: '20px'
@@ -203,6 +206,7 @@ export const ListService = () => {
                             <td >{service.title}</td>
                             <td >{
                                 <img src={service.image}
+                                    alt='Ảnh'
                                     style={{
                                         width: '200px',
                                         height: '100px',

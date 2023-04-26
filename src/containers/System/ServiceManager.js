@@ -6,7 +6,7 @@ import { Card, CardBody, CardTitle } from 'reactstrap'
 import { DashUser } from './UserDash';
 import { DashService } from './ServiceDash';
 import { DashAppoinment } from './AppoinmentDash';
-
+import './UserManage.scss'
 
 export const Dashboard = () => {
     const [countUser, setCountUser] = React.useState(0)
@@ -74,7 +74,7 @@ export const Dashboard = () => {
                                     Tổng lịch hẹn
                                 </CardTitle>
                             </CardBody>
-                            <div className='list-service' />
+                            <div className='list-appoinment' />
                             <CardBody>
                                 <h5 style={{ textAlign: "center" }} >{countAppoinment}</h5>
                                 <h6 style={{ textAlign: "center" }} >Buổi</h6>
