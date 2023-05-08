@@ -7,15 +7,15 @@ import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import './UserManage.scss'
 
-import { ListAppoinment } from './AppoinmentList';
+import { ListAppoinmentStaff } from './AppoinmentListStaff';
 
 
-export const AppoinmentManage = () => {
+export const AppoinmentManageStaff = () => {
     library.add(fas)
 
     return (
         <>
-            <h3 className="title">MANAGE APPOINMENT WITH ADMIN</h3>
+            <h3 className="title">MANAGE APPOINMENT WITH STAFF</h3>
             <Table striped bordered hover size="sm" >
                 <thead>
                     <tr>
@@ -30,7 +30,7 @@ export const AppoinmentManage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <ListAppoinment />
+                    <ListAppoinmentStaff />
                 </tbody>
             </Table>
         </>

@@ -12,7 +12,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import { HomeBody } from './HomePage/HomeBody.js'
 import { HomeHeader } from './HomePage/HomeHeader';
 import { SignInSide } from '../routes/Login.js'
-import { AdminLogin } from '../routes/AdminLogin';
+import { LoginAdmin } from '../routes/LoginAdmin';
 import { SignUp } from '../routes/Register';
 import { BoardAdmin } from '../routes/DashBoardAdmin';
 import { BoardStaff } from '../routes/DashBoardStaff';
@@ -20,6 +20,7 @@ import { BoardUser } from '../routes/DashBoardUser';
 import { IntroPage } from '../routes/IntroPage';
 import { ServicePage } from '../routes/ServicePage';
 import { DetailServicePage } from '../routes/DetailServicePage';
+import { NotFound } from '../routes/NotFound';
 
 
 const App = () => {
@@ -40,10 +41,11 @@ const App = () => {
                   <Route path="/detail" element={<DetailServicePage />} />
                   <Route path="/register" element={<SignUp />} />
                   <Route path="/login" element={<SignInSide />} />
-                  <Route path="/login-admin" element={<AdminLogin />} />
+                  <Route path="/login-admin" element={<LoginAdmin />} />
                   <Route path="/User" element={<BoardUser />} />
                   <Route path="/Staff" element={<BoardStaff />} />
                   <Route path="/Admin" element={<BoardAdmin />} />
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </BrowserRouter >
             </>

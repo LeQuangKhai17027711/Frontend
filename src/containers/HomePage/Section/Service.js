@@ -6,10 +6,10 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+import Pagination from 'react-js-pagination';
 
 import './Service.scss'
 
@@ -21,7 +21,7 @@ export const Service = () => {
     library.add(fas)
 
     const navigate = useNavigate()
-
+    const [activePage, setActivePage] = React.useState(1);
     //Get Service
     const { loading, error, data } = useQuery(getAllService)
     if (loading) return null;
@@ -35,12 +35,27 @@ export const Service = () => {
             }
         })
     }
+    const onChangePaginate = (pageNumber) => {
+        setActivePage(pageNumber);
+        // to set offset
+    };
+
+    // Dieu kien
+
+    const servicePerPage = (service, index) => {
+        if (index >= activePage * 6 - 6 && index < activePage * 6) return service;
+    };
+    //get DataPerPage
+    let dataPaginations = data.services.services.filter(servicePerPage);
+
     return (
         <div className='container-cont'>
             <h1 className='title-cont'>Danh sách dịch vụ</h1>
             <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {data.services.services && data.services.services.map((service, index) => (
+                <Grid container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {data.services.services && dataPaginations.map((service, index) => (
                         <Grid xs={2} sm={4} md={4} key={index} onClick={() => { HandlePickService(service) }}>
                             <Card sx={{ maxWidth: 345 }}
 
@@ -74,6 +89,28 @@ export const Service = () => {
                         </Grid>
                     ))}
                 </Grid>
+            </Box>
+            <Box
+                justifyContent={"center"}
+                alignItems={"center"}
+                display={"flex"}
+                sx={{
+                    margin: "20px 0px",
+                }}
+            >
+                <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={6}
+                    totalItemsCount={data.services.services.length}
+                    pageRangeDisplayed={5}
+                    onChange={onChangePaginate}
+                    innerClass="pagination"
+                    itemClass="page-item"
+                    activeLinkClass="page-link active"
+                    linkClass="page-link"
+                    prevPageText="Previous"
+                    nextPageText="Next"
+                />
             </Box>
         </div>
     );

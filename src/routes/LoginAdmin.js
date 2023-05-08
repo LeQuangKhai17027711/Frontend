@@ -40,7 +40,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export const AdminLogin = () => {
+export const LoginAdmin = () => {
 
     const [variant, setVariant] = React.useState('')
     const [username, setName] = React.useState('')
@@ -97,7 +97,11 @@ export const AdminLogin = () => {
             <ThemeProvider theme={theme}>
                 {
                     auth.isLoggedIn &&
-                    <Navigate to="/Admin" replace={true} />
+                    (auth.userInfo.role === "Admin" ? (
+                        <Navigate to="/Admin" />
+                    ) : (
+                        <Navigate to="/Staff" />
+                    ))
                 }
                 <Grid container component="main" sx={{ height: '100vh' }}>
                     <CssBaseline />

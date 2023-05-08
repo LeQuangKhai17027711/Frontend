@@ -13,13 +13,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Grid from '@mui/material/Unstable_Grid2';
 
-import { useDispatch } from 'react-redux'
+
 import { allActions } from '../store/actions'
 import { UserManage } from '../containers/System/UserManage';
 import { Dashboard } from '../containers/System/ServiceManager';
 import { ServiceManage } from '../containers/System/ServiceManage';
 import { AppoinmentManage } from '../containers/System/AppoinmentManage'
 
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 
 export const BoardAdmin = () => {
@@ -31,36 +32,38 @@ export const BoardAdmin = () => {
     const [service, setService] = React.useState(false)
     const [appointment, setAppointment] = React.useState(false)
 
-    const handleListItemClick = (event) => {
-
-        if (event.target.innerHTML === "Dash board") {
-            setService(false)
-            setAppointment(false)
-            setUser(false)
-            setDashBoad(true)
-        } else if (event.target.innerHTML === "Quản lý người dùng") {
-            setService(false)
-            setAppointment(false)
-            setDashBoad(false)
-            setUser(true)
-        }
-        else if (event.target.innerHTML === "Quản lý dịch vụ") {
-            setDashBoad(false)
-            setUser(false)
-            setAppointment(false)
-            setService(true)
-        }
-        else if (event.target.innerHTML === "Lịch hẹn") {
-            setDashBoad(false)
-            setUser(false)
-            setService(false)
-            setAppointment(true)
-        }
-        else if (event.target.innerHTML === "Đăng xuất") {
-            dispatch(allActions.processLogout())
-            localStorage.removeItem('user')
-            localStorage.removeItem('role')
-            navigate('/login-admin');
+    const handleListItemClick = (event, name) => {
+        switch (name) {
+            case 'Dash board':
+                setService(false)
+                setAppointment(false)
+                setUser(false)
+                setDashBoad(true)
+                break;
+            case 'Quản lý người dùng':
+                setService(false)
+                setAppointment(false)
+                setDashBoad(false)
+                setUser(true)
+                break;
+            case 'Quản lý dịch vụ':
+                setDashBoad(false)
+                setUser(false)
+                setAppointment(false)
+                setService(true)
+                break;
+            case 'Lịch hẹn':
+                setDashBoad(false)
+                setUser(false)
+                setService(false)
+                setAppointment(true)
+                break;
+            default:
+                dispatch(allActions.processLogout())
+                localStorage.removeItem('user')
+                localStorage.removeItem('role')
+                navigate('/login-admin');
+                break;
         }
     }
 
@@ -78,38 +81,38 @@ export const BoardAdmin = () => {
                                     </ListSubheader>
                                 }
                             >
-                                <ListItemButton onClick={(event) => handleListItemClick(event)}>
+                                <ListItemButton onClick={(event, name) => handleListItemClick(event, name = 'Dash board')}>
                                     <ListItemIcon>
                                         <DashBoardIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Dash board" />
                                 </ListItemButton>
-                                <ListItemButton onClick={(event) => handleListItemClick(event)}>
+                                <ListItemButton onClick={(event, name) => handleListItemClick(event, name = 'Quản lý người dùng')}>
                                     <ListItemIcon >
                                         <PersionIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Quản lý người dùng" />
                                 </ListItemButton>
-                                <ListItemButton onClick={(event) => handleListItemClick(event)}>
+                                <ListItemButton onClick={(event, name) => handleListItemClick(event, name = 'Quản lý dịch vụ')}>
                                     <ListItemIcon>
                                         <EngineeringIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Quản lý dịch vụ" />
                                 </ListItemButton>
-                                <ListItemButton onClick={(event) => handleListItemClick(event)} >
+                                <ListItemButton onClick={(event, name) => handleListItemClick(event, name = 'Dash board')} >
                                     <ListItemIcon>
                                         <ArticleIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Phản hồi khách hàng" />
                                 </ListItemButton>
                                 <h4>Khác</h4>
-                                <ListItemButton onClick={(event) => handleListItemClick(event)} >
+                                <ListItemButton onClick={(event, name) => handleListItemClick(event, name = 'Lịch hẹn')} >
                                     <ListItemIcon>
                                         <CalendarMonthIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Lịch hẹn" />
                                 </ListItemButton>
-                                <ListItemButton onClick={(event) => handleListItemClick(event)} >
+                                <ListItemButton onClick={(event, name) => handleListItemClick(event, name = 'Đăng xuất')} >
                                     <ListItemIcon>
                                         <LogoutIcon />
                                     </ListItemIcon>

@@ -27,7 +27,7 @@ import './HomeHeader.scss'
 export const HomeHeader = () => {
     library.add(fas)
 
-    const settings = ['Account', 'Logout'];
+    const settings = ['Account', 'ChangePass', 'Logout'];
     let navigate = useNavigate();
     const dispatch = useDispatch()
     const location = useLocation();
@@ -41,19 +41,23 @@ export const HomeHeader = () => {
     };
 
     //Profile
-    const handleCloseUserMenu = (event) => {
+    const handleCloseUserMenu = (name) => {
 
-        if (event.target.innerHTML === "Account") {
+        if (name.setting === "Account") {
 
             if (auth.userInfo.role === "Staff") {
                 navigate('/Staff')
             } else if (auth.userInfo.role === "Customer") {
                 navigate('/User')
             }
-        } else if (event.target.innerHTML === "Logout") {
+        } else if (name.setting === "ChangePass") {
+
+        }
+        else if (name.setting === "Logout") {
             dispatch(allActions.processLogout())
             navigate('/login')
         }
+
         setAnchorElUser(null);
     };
 
@@ -82,9 +86,6 @@ export const HomeHeader = () => {
 
     }, [auth.isLoggedIn, location.pathname, navigate]);
 
-    if (auth.isLoggedIn) {
-        console.log(auth.userInfo.role === 'Admin')
-    }
     return (
         <>
             {
@@ -141,14 +142,14 @@ export const HomeHeader = () => {
                                                     horizontal: 'right',
                                                 }}
                                                 open={Boolean(anchorElUser)}
-                                                onClose={handleCloseUserMenu}
+                                                onClose={(name) => handleCloseUserMenu(name = '')}
                                             >
                                                 <MenuItem >
                                                     <Typography align="center" variant="h6">{auth.userInfo.lastName}</Typography>
                                                 </MenuItem>
                                                 <Divider sx={{ my: 0 }} />
                                                 {settings.map((setting) => (
-                                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                                    <MenuItem key={setting} onClick={(name) => handleCloseUserMenu(name = { setting })}>
                                                         <Typography textAlign="center">{setting}</Typography>
                                                     </MenuItem>
                                                 ))}
@@ -230,7 +231,7 @@ export const HomeHeader = () => {
                                                     </MenuItem>
                                                     <Divider sx={{ my: 0 }} />
                                                     {settings.map((setting) => (
-                                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                                        <MenuItem key={setting} onClick={(name) => handleCloseUserMenu(name = { setting })}>
                                                             <Typography textAlign="center">{setting}</Typography>
                                                         </MenuItem>
                                                     ))}
@@ -245,7 +246,6 @@ export const HomeHeader = () => {
                                                     </IconButton>
                                                 </Link>
                                             </Tooltip>
-
                                             </>
                                         }
                                     </Box>

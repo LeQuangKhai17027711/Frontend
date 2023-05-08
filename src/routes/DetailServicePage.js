@@ -57,7 +57,7 @@ export const DetailServicePage = () => {
 
     React.useEffect(() => {
         if (newAppoinmentData.called === true) {
-            console.log(newAppoinmentData)
+
             if (newAppoinmentData.data) {
                 if (newAppoinmentData.data.createAppointment.errCode === '0') {
                     window.confirm(newAppoinmentData.data.createAppointment.errMessage);
@@ -151,8 +151,10 @@ export const DetailServicePage = () => {
                     name: newappoinment.name,
                     email: newappoinment.email,
                     phone: newappoinment.phone,
+                    product: state.service.title,
                     time: __getCurrentDateTime('hh:mimi:ss dd-mm-yyyy'),
                     note: newappoinment.note,
+                    check: false,
                 },
             })
 

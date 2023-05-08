@@ -124,8 +124,7 @@ export const ServiceManage = () => {
 
     //Get OnChange Value
     const handleOnChangeInput = (event) => {
-        console.log(event.target.name)
-        console.log(event.target.value)
+
         setNewservice({
             ...newservice,
             [event.target.name]: event.target.value

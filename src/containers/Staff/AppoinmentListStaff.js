@@ -13,7 +13,7 @@ import { getAllAppointment, deleteAppointment, updateAppointment } from '../grap
 import { sendMail } from '../graphql-client/sendmail-queries';
 
 
-export const ListAppoinment = () => {
+export const ListAppoinmentStaff = () => {
     library.add(fas)
     const [datasend, setDataSend] = useState({
         idApp: '',
@@ -118,9 +118,6 @@ export const ListAppoinment = () => {
             time: __getCurrentDateTime('hh:mimi:ss dd-mm-yyyy'),
         })
     }
-
-
-
 
     const HandleSendMail = async () => {
         loaddata()
