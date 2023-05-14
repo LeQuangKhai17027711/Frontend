@@ -74,3 +74,30 @@ thead {
 .from-content {
     height: 150px;
 }
+
+.contain-profile {
+    margin-top: 50px;
+
+    .header-profile {
+        margin-bottom: 50px;
+        text-align: center;
+        color: rgb(81, 81, 246);
+    }
+
+    .body-profile {
+        .btn-update {
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-left: 500px;
+            margin-top: 50px;
+        }
+
+        .btn-save {
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-right: 20px;
+        }
+    }
+
+
+}

@@ -1,0 +1,42 @@
+.container-page {
+    position: relative;
+    padding: 0 300px;
+
+    .text-1 {
+        color: red;
+        margin: 30px 0;
+    }
+
+    .text-2 {
+        margin: 30px 0;
+    }
+
+    .text-3 {
+        margin: 30px 0;
+    }
+
+    .text-4 {
+        margin: 50px 0;
+        color: red;
+        text-align: center;
+    }
+
+    .g-4 {
+        text-align: center;
+
+        .title-card {
+            color: rgb(101, 101, 243);
+            margin: 30px;
+        }
+
+        .title-number {
+            color: red;
+        }
+    }
+
+    .statistical {
+        height: 300px;
+        position: relative;
+        padding: 80px;
+    }
+}

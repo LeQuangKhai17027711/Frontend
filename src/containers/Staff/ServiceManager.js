@@ -63,7 +63,7 @@ export const DashboardStaff = () => {
                     <Grid item xs={6} md={6} >
                         <DashCustomer />
                     </Grid>
-                    <Grid item xs={6} md={6}>
+                    <Grid item xs={12} md={12}>
                         <DashAppoinmentStaff />
                     </Grid>
                 </Grid>

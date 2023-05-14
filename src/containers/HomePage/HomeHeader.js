@@ -27,7 +27,7 @@ import './HomeHeader.scss'
 export const HomeHeader = () => {
     library.add(fas)
 
-    const settings = ['Account', 'ChangePass', 'Logout'];
+    const settings = ['Account', 'Logout'];
     let navigate = useNavigate();
     const dispatch = useDispatch()
     const location = useLocation();
@@ -50,8 +50,6 @@ export const HomeHeader = () => {
             } else if (auth.userInfo.role === "Customer") {
                 navigate('/User')
             }
-        } else if (name.setting === "ChangePass") {
-
         }
         else if (name.setting === "Logout") {
             dispatch(allActions.processLogout())
@@ -61,21 +59,7 @@ export const HomeHeader = () => {
         setAnchorElUser(null);
     };
 
-    //Scrolling lock
-    const stickyHeader = React.useRef()
 
-    React.useLayoutEffect(() => {
-        const mainHeader = document.getElementById('mainHeader')
-        let fixedTop = stickyHeader.current.offsetTop
-        const fixedHeader = () => {
-            if (window.pageYOffset > fixedTop) {
-                mainHeader.classList.add('fixedTop')
-            } else {
-                mainHeader.classList.remove('fixedTop')
-            }
-        }
-        window.addEventListener('scroll', fixedHeader)
-    }, [])
     //useEffect
     React.useEffect(() => {
         if (auth.isLoggedIn === false && (location.pathname === '/login-admin' || location.pathname === '/Admin')) {
@@ -89,7 +73,7 @@ export const HomeHeader = () => {
     return (
         <>
             {
-                auth.isLoggedIn ? (auth.userInfo.role === 'Admin' ? <></> : <> <div className="home-header-container" id="mainHeader" ref={stickyHeader}>
+                auth.isLoggedIn ? (auth.userInfo.role === 'Admin' ? <></> : <> <div className="home-header-container" id="mainHeader" >
                     <div className="home-header-content">
                         <div className="left-content">
                             <Link to='/' className='header-logo'></Link>
@@ -171,7 +155,7 @@ export const HomeHeader = () => {
                         </div>
                     </div>
                 </div ></>) : <>
-                    <div className="home-header-container" id="mainHeader" ref={stickyHeader}>
+                    <div className="home-header-container" id="mainHeader" >
                         <div className="home-header-content">
                             <div className="left-content">
                                 <Link to='/' className='header-logo'></Link>

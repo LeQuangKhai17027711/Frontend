@@ -15,13 +15,17 @@ import { AppoinmentManageStaff } from '../containers/Staff/AppoinmentManageStaff
 import { CustomerManage } from '../containers/Staff/CustomerManage';
 import { ProfileStaff } from '../containers/Staff/ProfileStaff';
 
+import { useSelector } from 'react-redux';
+
 export const BoardStaff = () => {
 
     const [dashboard, setDashBoad] = React.useState(true)
     const [profile, setProfile] = React.useState(false)
     const [customer, setCustomer] = React.useState(false)
     const [appointment, setAppointment] = React.useState(false)
+    const currentUser = useSelector((state) => state.user.userInfo);
 
+    //const currentUser = useSelector((state) => state.user.userInfo);
 
     const HandleProfile = () => {
         setAppointment(false)
@@ -54,6 +58,7 @@ export const BoardStaff = () => {
                 break;
         }
     }
+
     return (
         <Container>
             <Row>
@@ -68,10 +73,10 @@ export const BoardStaff = () => {
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div" name='Profile'>
-                                    Tèo
+                                    {currentUser.firstName + ' ' + currentUser.lastName}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    Tèo @ 123
+                                    {currentUser.email}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>

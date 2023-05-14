@@ -14,7 +14,7 @@ import { updateUser, getUser } from '../graphql-client/queries';
 
 const ariaLabel = { 'aria-label': 'description' };
 
-export const ProfileStaff = () => {
+export const ProfileCustomer = () => {
 
     const [userupdate,] = useMutation(updateUser)
     const currentUser = useSelector((state) => state.user.userInfo);
@@ -30,6 +30,10 @@ export const ProfileStaff = () => {
         gender: currentUser.gender,
         phoneNumber: currentUser.phoneNumber,
     })
+
+    const HandleChangePass = () => {
+        console.log("Ok")
+    }
 
     const HandleEditUser = () => {
         updateChange()
@@ -81,7 +85,9 @@ export const ProfileStaff = () => {
         <>
             <div className='contain-profile'>
                 <div className='header-profile'><h2>THÔNG TIN CÁ NHÂN</h2></div>
+
                 <div className='body-profile'>
+
                     <Row>
                         <Col md={2}>
                             <FormGroup>
@@ -213,14 +219,16 @@ export const ProfileStaff = () => {
                             </RadioGroup> : <h6>{updateuser.gender ? ': Nam' : ': Nữ'}</h6>}
                         </Col>
                     </Row>
-                    {update ? <div className='btn-update'><Button className='btn-save' color="primary" onClick={() => { HandleUpdateUser() }}>
+                    {update ? <div className='btn-edit'><Button className='btn-save' color="primary" onClick={() => { HandleUpdateUser() }}>
                         Save
                     </Button>{' '}
                         <Button color="danger" onClick={() => { HandleEditUser() }}>
                             Cancel
-                        </Button></div> : <Button className='btn-update' color="primary" onClick={() => { HandleEditUser() }}>
-                        Update
-                    </Button>
+                        </Button></div> : <div className='btn-changepass'><Button className='btn-change' color="info" onClick={() => { HandleChangePass() }}>
+                            Password
+                        </Button> {' '} <Button color="primary" onClick={() => { HandleEditUser() }}>
+                            Update
+                        </Button></div>
                     }
                 </div>
             </div>
