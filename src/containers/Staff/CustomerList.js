@@ -229,17 +229,20 @@ export const ListCustomer = () => {
                                     value="Nữ"
                                     control={<Radio />}
                                     label="Nữ"
+                                    checked={!updateuser.gender}
                                 />
                                 <FormControlLabel
                                     value="Nam"
                                     control={<Radio />}
                                     label="Nam"
+                                    checked={updateuser.gender}
                                 />
                                 <FormControlLabel
                                     value="disabled"
                                     disabled
                                     control={<Radio />}
                                     label="Khác"
+
                                 />
                             </RadioGroup>
                         </Col>

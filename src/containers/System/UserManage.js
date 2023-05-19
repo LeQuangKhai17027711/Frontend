@@ -72,7 +72,6 @@ export const UserManage = () => {
         }
     }, [newUserData.loading]);
 
-
     //ValidateInput
     const checkValidInput = () => {
         let isValid = true;
@@ -152,7 +151,6 @@ export const UserManage = () => {
 
             toggle()
         }
-
     }
 
     //Get OnChange Value
@@ -163,7 +161,6 @@ export const UserManage = () => {
             [event.target.name]: event.target.value
         })
     }
-
 
     return (
         <>
@@ -219,7 +216,7 @@ export const UserManage = () => {
                                 <Input
                                     id="exampleFirstName"
                                     name="firstName"
-                                    placeholder="Nguyễn Văn "
+                                    placeholder="Nguyễn Văn"
                                     onChange={(event) => { handleOnChangeInput(event) }}
                                     value={newuser.firstName}
                                 />

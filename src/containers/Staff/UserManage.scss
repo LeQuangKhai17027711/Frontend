@@ -75,6 +75,29 @@ thead {
     height: 150px;
 }
 
+.header-modal {
+    text-align: center;
+}
+
+.body-modal {
+    margin-top: 20px;
+    width: 70%;
+    position: relative;
+    margin: auto;
+
+    .field1-modal {
+        position: relative;
+        width: 100%;
+    }
+
+    .field2-modal {
+        position: relative;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+}
+
 .contain-profile {
     margin-top: 50px;
 
@@ -85,11 +108,18 @@ thead {
     }
 
     .body-profile {
-        .btn-update {
+        .btn-edit {
             padding-left: 20px;
             padding-right: 20px;
             margin-left: 500px;
             margin-top: 50px;
+        }
+
+        .btn-change {
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-left: 500px;
+            margin-right: 20px;
         }
 
         .btn-save {

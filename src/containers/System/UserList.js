@@ -97,10 +97,12 @@ export const ListUser = () => {
 
     //Get OnChange Value
     const handleResetPass = () => {
-        setUpdateUser({
-            ...updateuser,
-            passWord: '12345678'
-        })
+        if (window.confirm("Bạn muốn reset lại mật khẩu ?")) {
+            setUpdateUser({
+                ...updateuser,
+                passWord: '12345678'
+            })
+        }
     }
 
     //Get OnChange Value
@@ -111,6 +113,7 @@ export const ListUser = () => {
             [event.target.name]: event.target.value
         })
     }
+
     return (
         <>
             <Modal isOpen={modal} toggle={toggle} size="lg" >
@@ -222,11 +225,13 @@ export const ListUser = () => {
                                     value="Nữ"
                                     control={<Radio />}
                                     label="Nữ"
+                                    checked={!updateuser.gender}
                                 />
                                 <FormControlLabel
                                     value="Nam"
                                     control={<Radio />}
                                     label="Nam"
+                                    checked={updateuser.gender}
                                 />
                                 <FormControlLabel
                                     value="disabled"
