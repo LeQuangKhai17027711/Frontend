@@ -42,7 +42,6 @@ const theme = createTheme();
 
 export const SignInSide = () => {
 
-    const [variant, setVariant] = React.useState('')
     const [username, setName] = React.useState('')
     const [password, setPassWord] = React.useState('12345678')
     const [errormessage, setErrorMessage] = React.useState('')
@@ -62,7 +61,6 @@ export const SignInSide = () => {
         })
     }, [username, password, login])
 
-
     const handleOnChangeUser = (event) => {
         setName(event.target.value)
 
@@ -80,11 +78,11 @@ export const SignInSide = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setVariant('success')
+
         if (dataLogin.data.login.errCode === "0") {
             setErrorMessage('');
             dispatch(allActions.userLoginSuccess(dataLogin.data.login.user))
-            enqueueSnackbar('Loggin success!', { variant });
+            enqueueSnackbar('Loggin success!', { variant: 'success' });
 
         } else {
             setErrorMessage(dataLogin.data.login.errMessage)
@@ -115,7 +113,6 @@ export const SignInSide = () => {
                         }}
                     />
                     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-
                         <Box
                             sx={{
                                 my: 8,
@@ -134,7 +131,6 @@ export const SignInSide = () => {
                             </Typography>
                             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                                 <TextField
-
                                     margin="normal"
                                     required
                                     fullWidth
@@ -151,8 +147,7 @@ export const SignInSide = () => {
                                     required
                                     fullWidth
                                     name="password"
-                                    value="12345678"
-                                    //label="Password"
+                                    label="Password"
                                     type={isShowPassWord ? 'text' : 'password'}
                                     id="password"
                                     autoComplete="current-password"
@@ -162,7 +157,7 @@ export const SignInSide = () => {
                                     <span onClick={() => handleShowHidePassword()} className="eyeshow">{isShowPassWord ? 'hide' : 'show'}</span>
                                 </div>
                                 <FormControlLabel
-                                    control={<Checkbox value="remember" checked color="primary" />}
+                                    control={<Checkbox value="remember" color="primary" />}
                                     label="Remember me"
                                 />
                                 <div className="col-12" style={{ color: 'red' }}>

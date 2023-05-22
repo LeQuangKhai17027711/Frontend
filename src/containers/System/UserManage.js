@@ -329,7 +329,6 @@ export const UserManage = () => {
                                 </Col>
                             </FormGroup>
                         </Col>
-
                     </Row>
                 </ModalBody>
                 <ModalFooter>

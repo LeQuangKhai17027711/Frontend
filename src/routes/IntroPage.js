@@ -73,7 +73,7 @@ export const IntroPage = () => {
 
                     <Col>
                         <Card>
-                            <Card.Img variant="top" height={'230px'} src="https://thumbs.dreamstime.com/z/normaliza-o-do-controle-de-qualidade-dos-padr-es-e-conceito-da-certifica-144187423.jpg" />
+                            <Card.Img variant="top" height={'230px'} src="https://cpc.vn/portals/0/articleupload/289f24d7-4f4e-432e-9f33-433e560272eb.png" />
                             <Card.Body>
                                 <Card.Title className='title-card'>Chất Lượng</Card.Title>
                                 <Card.Text className='context-card'>

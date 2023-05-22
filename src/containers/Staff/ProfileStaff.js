@@ -54,7 +54,28 @@ export const ProfileStaff = () => {
         updateChange()
     }
 
-    const checkValidInput = () => {
+    //Check validate New Password
+    const checkValidPassword = () => {
+        let isValid = true;
+
+        if (!changepassword.newPassword) {
+            isValid = false;
+            setMesageNewPassword("Missing parameter");
+        } else if (changepassword.newPassword.length < 8) {
+            isValid = false;
+            setMesageNewPassword("Password >= 8 character!");
+        }
+        if (!changepassword.repeatPassword) {
+            isValid = false;
+            setMesageRepeatPassword("Missing parameter");
+        } else if (changepassword.repeatPassword !== changepassword.newPassword) {
+            isValid = false;
+            setMesageRepeatPassword("Wrong password!");
+        } else return isValid;
+    };
+
+    //Check validate New Password
+    const checkValidUpdate = () => {
         let isValid = true;
 
         if (!changepassword.newPassword) {
@@ -77,7 +98,7 @@ export const ProfileStaff = () => {
     const HandleChangePassword = () => {
         setMesageNewPassword("");
         setMesageRepeatPassword("");
-        if (checkValidInput(changepassword)) {
+        if (checkValidPassword(changepassword)) {
             if (
                 window.confirm(
                     `Bạn ${currentUser.lastName} có chắc muốn dổi mật khẩu không?`
@@ -110,39 +131,40 @@ export const ProfileStaff = () => {
 
     //Update user
     const HandleUpdateUser = () => {
-        if (window.confirm(`Bạn ${updateuser.lastName} có chắc muốn update không?`)) {
+        if (checkValidUpdate(updateuser)) {
+            if (window.confirm(`Bạn ${updateuser.lastName} có chắc muốn update không?`)) {
 
-            if (updateuser) {
-                if (updateuser.gender === "Nam") {
-                    updateuser.gender = true
-                }
-                else {
-                    updateuser.gender = false
-                }
+                if (updateuser) {
+                    if (updateuser.gender === "Nam") {
+                        updateuser.gender = true
+                    }
+                    else {
+                        updateuser.gender = false
+                    }
 
-                userupdate({
-                    variables: {
-                        email: updateuser.email,
-                        passWord: updateuser.passWord,
-                        firstName: updateuser.firstName,
-                        lastName: updateuser.lastName,
-                        address: updateuser.address,
-                        phoneNumber: updateuser.phoneNumber,
-                        gender: updateuser.gender,
-                        role: updateuser.role,
-                    },
-                    refetchQueries: [{
-                        query: getUser,
+                    userupdate({
                         variables: {
-                            email: currentUser.email,
+                            email: updateuser.email,
+                            passWord: updateuser.passWord,
+                            firstName: updateuser.firstName,
+                            lastName: updateuser.lastName,
+                            address: updateuser.address,
+                            phoneNumber: updateuser.phoneNumber,
+                            gender: updateuser.gender,
+                            role: updateuser.role,
                         },
-                    }]
-                })
-                window.alert(`Cập nhật thành công`)
+                        refetchQueries: [{
+                            query: getUser,
+                            variables: {
+                                email: currentUser.email,
+                            },
+                        }]
+                    })
+                    window.alert(`Cập nhật thành công`)
+                }
             }
         }
     }
-
 
     //Get OnChange Value
     const handleOnChangePassword = (event) => {

@@ -1,17 +1,19 @@
 import React from 'react'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useSnackbar } from 'notistack';
 
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
-import { Stack } from '@mui/material'
+import Stack from '@mui/material/Stack'
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
@@ -32,6 +34,7 @@ export const HomeHeader = () => {
     const dispatch = useDispatch()
     const location = useLocation();
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const { enqueueSnackbar } = useSnackbar();
 
     //Get auth 
     const auth = useSelector((state) => state.user)
@@ -53,12 +56,12 @@ export const HomeHeader = () => {
         }
         else if (name.setting === "Logout") {
             dispatch(allActions.processLogout())
+            enqueueSnackbar('Logout success!', { variant: `warning` });
             navigate('/login')
         }
 
         setAnchorElUser(null);
     };
-
 
     //useEffect
     React.useEffect(() => {

@@ -40,7 +40,6 @@ export const SignUp = () => {
     const [check, setCheck] = React.useState(false)
     const [newUser, newUserData] = useMutation(registerUser)
     const [registerSuccess, setRegisterSuccess] = React.useState(false)
-    const [variant, setVariant] = React.useState('')
     const { enqueueSnackbar } = useSnackbar();
 
     const [newuser, setNewUser] = React.useState({
@@ -49,7 +48,7 @@ export const SignUp = () => {
         firstName: '',
         lastName: '',
         address: '',
-        gender: '',
+        gender: true,
         phoneNumber: '',
         role: 'Customer',
     })
@@ -101,18 +100,17 @@ export const SignUp = () => {
             },
         })
 
-    }, [check]);
+    }, [check === true]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        setVariant('success')
-
         if (checkValidInput(newuser)) {
+
             if (newUserData) {
-                console.log(newUserData)
+
                 if (newUserData.data.register.errCode === "0") {
-                    enqueueSnackbar('Register user success!', { variant });
+                    enqueueSnackbar('Register user success!', { variant: 'success' });
                     setRegisterSuccess(!registerSuccess)
                 } else {
                     alert(newUserData.data.register.errMessage)

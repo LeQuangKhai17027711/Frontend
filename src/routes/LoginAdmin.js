@@ -44,7 +44,7 @@ export const LoginAdmin = () => {
 
     const [variant, setVariant] = React.useState('')
     const [username, setName] = React.useState('')
-    const [password, setPassWord] = React.useState('12345678')
+    const [password, setPassWord] = React.useState('')
     const [errormessage, setErrorMessage] = React.useState('')
     const [isShowPassWord, setPass] = React.useState(false)
     const [login, dataLogin] = useMutation(loginUser)
@@ -154,8 +154,7 @@ export const LoginAdmin = () => {
                                     required
                                     fullWidth
                                     name="password"
-                                    value="12345678"
-                                    //label="Password"
+                                    label="Password"
                                     type={isShowPassWord ? 'text' : 'password'}
                                     id="password"
                                     autoComplete="current-password"
@@ -165,7 +164,7 @@ export const LoginAdmin = () => {
                                     <span onClick={() => handleShowHidePassword()} className="eyeshow">{isShowPassWord ? 'hide' : 'show'}</span>
                                 </div>
                                 <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary" checked />}
+                                    control={<Checkbox value="remember" color="primary" />}
                                     label="Remember me"
                                 />
                                 <div className="col-12" style={{ color: 'red' }}>
