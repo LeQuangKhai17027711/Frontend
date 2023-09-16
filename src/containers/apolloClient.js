@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:8080/graphql',
+    uri: 'https://backend-web-service-sdes.onrender.com',
 });
 
 const authLink = setContext((_, { headers }) => {
